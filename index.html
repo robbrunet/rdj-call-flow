@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RDJ Real Training Flow • Instant App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      background: #020617;
+      color: #f9fafb;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .app-container {
+      width: 100%;
+      max-width: 540px;
+      padding: 16px;
+    }
+    .card {
+      background: radial-gradient(circle at top, #111827, #020617);
+      border-radius: 18px;
+      padding: 18px 18px 14px 18px;
+      box-shadow: 0 18px 35px rgba(0,0,0,0.6);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 70vh;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+    .card-subtitle {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .badge {
+      font-size: 0.7rem;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(94, 234, 212, 0.5);
+      color: #a5f3fc;
+      background: rgba(15, 23, 42, 0.9);
+      white-space: nowrap;
+    }
+    .card-body {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .script-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #f97316;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+    .script-text {
+      font-size: 0.98rem;
+      line-height: 1.5;
+      color: #e5e7eb;
+      white-space: pre-wrap;
+    }
+    .note {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 8px;
+      border-left: 2px solid rgba(148, 163, 184, 0.5);
+      padding-left: 8px;
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .btn {
+      flex: 1 1 calc(50% - 8px);
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease-out;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: #22d3ee;
+      box-shadow: 0 6px 16px rgba(34, 211, 238, 0.3);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #22d3ee);
+      border: none;
+      color: #022c22;
+      font-weight: 600;
+    }
+    .btn-full { flex: 1 1 100%; }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+    .flow-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #a5b4fc;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-subtitle" id="cardFlow">RDJ • Real Training Flow</div>
+          <div class="card-title" id="cardTitle">Loading…</div>
+        </div>
+        <div class="badge" id="cardTag">START</div>
+      </div>
+      <div class="card-body">
+        <div class="script-label">RDJ Script</div>
+        <div class="script-text" id="cardContent"></div>
+        <div class="note" id="cardNote"></div>
+      </div>
+      <div class="buttons" id="cardButtons"></div>
+      <div class="footer">
+        <span id="cardIdLabel">Node: –</span>
+        <span class="flow-tag">TRUTH • Trigger • Reveal • Uncover • Test • Hit</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const nodes = {
+      start: {
+        id: "start",
+        title: "Warm Welcome & Frame",
+        tag: "TRIGGER",
+        flow: "RDJ • Real Training Flow",
+        content:
+`“Hey, what’s up — Rob Don Juan here. First off, I respect the hell out of you for showing up.
+
+Before we dive in, I want you to know this: I’m not here to pressure you into anything. I’m here to see if this is the right fit for BOTH of us.
+
+This call *is* being recorded for quality and training purposes. Is that okay with you?”`,
+        note: "Say this slowly, relaxed and confident. Smile. Let them feel your certainty and calm energy.",
+        buttons: [
+          { label: "They say YES (Recording OK)", target: "intro_role" },
+          { label: "They say NO / Hesitate", target: "recording_pushback" }
+        ]
+      },
+      recording_pushback: {
+        id: "recording_pushback",
+        title: "Handle Recording Objection",
+        tag: "TRIGGER",
+        flow: "RDJ • Real Training Flow",
+        content:
+`“Totally fair, I appreciate your honesty.
+
+Here’s the deal — the only reason we record is to keep the standard high and make sure we’re doing right by people.
+
+Without the recording, I actually can’t move forward with the process. Would you rather reschedule for later, or are you okay proceeding with the recording so we can see if this is a real fit for you?”`,
+        note: "If they still refuse, politely end the call and move on. Don’t burn energy here.",
+        buttons: [
+          { label: "They agree to recording", target: "intro_role" },
+          { label: "They refuse", target: "exit_no_recording" }
+        ]
+      },
+      exit_no_recording: {
+        id: "exit_no_recording",
+        title: "Graceful Exit – No Recording",
+        tag: "END",
+        flow: "RDJ • Real Training Flow",
+        content:
+`“No worries at all, I totally respect that.
+
+Since we can’t proceed without the recording, let’s pause here. If you change your mind in the future or feel ready to revisit this, just reach back out and we’ll see what we can do.
+
+I appreciate your time today.”`,
+        note: "End clean. You can always re-approach later.",
+        buttons: [
+          { label: "Back to Start", target: "start" }
+        ]
+      },
+      intro_role: {
+        id: "intro_role",
+        title: "Frame Your Role & Intention",
+        tag: "TRIGGER",
+        flow: "RDJ • Real Training Flow",
+        content:
+`“Awesome, thank you.
+
+So my name is Rob — some people call me RDJ, Rob Don Juan.
+
+I’m one of the people helping Brad Lea’s companies find killers who actually want to grow, earn, and plug into a serious system.
+
+My only goal on this call is to see if this is a good mutual fit for you and for us. If it is, we’ll talk next steps. If not, we’ll part ways as friends.
+
+Is it cool if I ask you a few questions about where you’re at right now?”`,
+        note: "You’re setting the tone: calm, confident, no neediness.",
+        buttons: [
+          { label: "They say YES", target: "disc_overview" },
+          { label: "They hesitate / unsure", target: "disc_hesitate" }
+        ]
+      },
+      disc_hesitate: {
+        id: "disc_hesitate",
+        title: "Ease Their Hesitation",
+        tag: "REVEAL",
+        flow: "RDJ • Real Training Flow",
+        content:
+`“Totally get it.
+
+No pressure at all — these questions aren’t to judge you, they’re just so I can understand what you’re actually trying to create, and whether this path even makes sense for you.
+
+If at any point it doesn’t feel aligned, you can say so. Fair enough?”`,
+        note: "If they agree, move into discovery. If they stay closed off, you can exit.",
+        buttons: [
+          { label: "They agree – move on", target: "disc_overview" },
+          { label: "Still closed off", target: "exit_not_ready" }
+        ]
+      },
+      exit_not_ready: {
+        id: "exit_not_ready",
+        title: "Not Emotionally Ready – Exit",
+        tag: "END",
+        flow: "RDJ • Real Training Flow",
+        content:
+`“You know what, I respect that.
+
+This only works when someone is actually ready to look at their situation and change it. If now isn’t that time, that’s okay.
+
+If things shift and you’re ready to really go after it, reach back out and we’ll revisit.”`,
+        note: "Honor their state. No need to push further.",
+        buttons: [
+          { label: "Back to Start", target: "start" }
+        ]
+      },
+      disc_overview: {
+        id: "disc_overview",
+        title: "Discovery – Big Picture",
+        tag: "REVEAL",
+        flow: "RDJ • Discovery",
+        content:
+`“Cool. Let me start wide and then we’ll zoom in.
+
+What are you doing right now for work, and how long have you been doing it?”`,
+        note: "Let them talk. Take brief notes. Your job is to LISTEN here, not pitch.",
+        buttons: [
+          { label: "Ask about work", target: "disc_work" }
+        ]
+      },
+      disc_work: {
+        id: "disc_work",
+        title: "Discovery – Work & Path",
+        tag: "REVEAL",
+        flow: "RDJ • Discovery",
+        content:
+`“Got it.
+
+Do you have any sales experience at all? And more importantly — what made you start looking for something new right now, versus just staying where you are?”`,
+        note: "Listen for pain: boredom, capped income, no growth, toxic environment, etc.",
+        buttons: [
+          { label: "Move to money/lifestyle", target: "disc_money" }
+        ]
+      },
+      disc_money: {
+        id: "disc_money",
+        title: "Discovery – Money & Lifestyle",
+        tag: "UNCOVER",
+        flow: "RDJ • Discovery",
+        content:
+`“Let’s talk money for a second.
+
+Why do you actually want to earn more? What would *doubling* your income realistically change for you?
+
+And have you ever made $10k in a single month before?”`,
+        note: "If they say no, follow up with: ‘Why do you think that hasn’t happened yet?’",
+        buttons: [
+          { label: "Move to mindset", target: "disc_mindset" }
+        ]
+      },
+      disc_mindset: {
+        id: "disc_mindset",
+        title: "Discovery – Mindset & Habits",
+        tag: "UNCOVER",
+        flow: "RDJ • Discovery",
+        content:
+`“I’m big on habits and mindset, so I’m curious:
+
+What does your morning routine look like right now?
+Do you work out? Do any personal development or reading?
+What keeps your ambition going when you feel like quitting?”`,
+        note: "This tells you if they align with Brad’s philosophy and if they’re coachable.",
+        buttons: [
+          { label: "Summarize & Bridge", target: "bridge_summary" }
+        ]
+      },
+      bridge_summary: {
+        id: "bridge_summary",
+        title: "Bridge – Reflect Their Situation",
+        tag: "UNCOVER",
+        flow: "RDJ • Bridge",
+        content:
+`“I appreciate you sharing all that.
+
+So if I’m hearing you right, you’re at a point where staying where you are isn’t going to get you where you want to go — income-wise *and* lifestyle-wise.
+
+You want more money, more control, and better habits so you can actually become the person who deserves the life you’re picturing. Does that feel accurate?”`,
+        note: "Wait for them to confirm. This is your ‘UNLOCK’ moment.",
+        buttons: [
+          { label: "They agree", target: "bridge_training_intro" },
+          { label: "They correct you", target: "bridge_adjust" }
+        ]
+      },
+      bridge_adjust: {
+        id: "bridge_adjust",
+        title: "Bridge – Adjust Understanding",
+        tag: "UNCOVER",
+        flow: "RDJ • Bridge",
+        content:
+`“Got it, thank you for clarifying — that helps a lot.
+
+My goal is to make sure we’re not forcing anything that doesn’t match what you actually want.
+
+Let me show you how the Real Training path works and you can decide if it lines up with your goals.”`,
+        note: "You’re aligning, not overpowering. Now you move into the offer frame.",
+        buttons: [
+          { label: "Explain training & placement", target: "bridge_training_intro" }
+        ]
+      },
+      bridge_training_intro: {
+        id: "bridge_training_intro",
+        title: "Explain Training & Placement",
+        tag: "TEST",
+        flow: "RDJ • Bridge",
+        content:
+`“Here’s how Brad built this.
+
+Before you plug into any of his companies, you go through Real Training — about 30 days of intensive coaching and mentorship focused on mindset, skillset, and habits.
+
+Once you complete certification, you get the opportunity to choose which company you want placement with — Lightspeed VT, Real Merchant, Real Financial, etc.
+
+Would you be willing to go through training *before* getting placed, if it meant you could actually succeed out of the gate?”`,
+        note: "If they say no, they’re not your person. If yes, continue testing commitment.",
+        buttons: [
+          { label: "They say YES", target: "commitment_questions" },
+          { label: "They say NO", target: "exit_not_fit" }
+        ]
+      },
+      exit_not_fit: {
+        id: "exit_not_fit",
+        title: "Exit – Not Willing to Train",
+        tag: "END",
+        flow: "RDJ • Real Training Flow",
+        content:
+`“Totally fair.
+
+This is really built for people who are willing to invest time into becoming lethal at sales before they jump into the chair.
+
+If that doesn’t feel aligned, it’s probably not the right fit — and that’s okay.”`,
+        note: "You only move forward with committed people.",
+        buttons: [
+          { label: "Back to Start", target: "start" }
+        ]
+      },
+      commitment_questions: {
+        id: "commitment_questions",
+        title: "Test for Commitment",
+        tag: "TEST",
+        flow: "RDJ • Commitment",
+        content:
+`“Let me sanity-check a couple things with you so we don’t waste your time.
+
+Are you willing to go 4–6 weeks through training without making money while you learn?
+Are you willing to commit 10–20 hours a week after training to actually implement?
+Is there anything you can think of that would realistically stop you from starting if this feels right?”`,
+        note: "Listen for real constraints vs. excuses. Clarify if needed.",
+        buttons: [
+          { label: "They’re committed", target: "present_investment" },
+          { label: "They have big blocks", target: "objections_root" }
+        ]
+      },
+      present_investment: {
+        id: "present_investment",
+        title: "Present the Deposit as a Commitment",
+        tag: "HIT",
+        flow: "RDJ • Close",
+        content:
+`“Okay, here’s how Brad structured it.
+
+There’s a $5,000 commitment deposit to get started. It’s fully refundable — you get it back once you generate $50,000 in sales with any of Brad’s companies.
+
+He doesn’t do this to make money on training. He does it to weed out quitters and attract people who actually bet on themselves.
+
+From there, you plug into proven offers, proven systems, and proven teams — you’re not starting from scratch.”`,
+        note: "Say this calmly and matter-of-fact. No flinch.",
+        buttons: [
+          { label: "They’re interested / buying questions", target: "buying_questions" },
+          { label: "They object", target: "objections_root" }
+        ]
+      },
+      buying_questions: {
+        id: "buying_questions",
+        title: "Answer Buying Questions",
+        tag: "HIT",
+        flow: "RDJ • Close",
+        content:
+`“Great questions — I love that you’re thinking this through.
+
+Let’s walk through the details together, and I’ll send you the link so you can see everything clearly while we talk.”`,
+        note: "From here, you share screen or walk the page, then move into final close.",
+        buttons: [
+          { label: "Move to 3-Pillar Close", target: "three_pillar_close" }
+        ]
+      },
+      objections_root: {
+        id: "objections_root",
+        title: "Objection Menu",
+        tag: "HIT",
+        flow: "RDJ • Objections",
+        content:
+`“Totally fair. People usually have one of a few main concerns.
+
+Is it more:
+• ‘I need to think about it.’
+• ‘I don’t have the money right now.’
+• ‘I need to talk to my spouse/partner.’
+• ‘I’m not sure this will work for me.’
+• Or ‘I’ve already invested in stuff like this before and got burned’?”`,
+        note: "When they choose, go straight to that card, isolate, handle, then re-close.",
+        buttons: [
+          { label: "Think about it", target: "obj_think" },
+          { label: "Money", target: "obj_money" },
+          { label: "Spouse", target: "obj_spouse" },
+          { label: "Not sure it works", target: "obj_doubt" },
+          { label: "Burned before", target: "obj_burned" },
+          { label: "Back to Close", target: "present_investment" }
+        ]
+      },
+      obj_think: {
+        id: "obj_think",
+        title: "Objection – Need to Think",
+        tag: "OBJECTION",
+        flow: "RDJ • Objections",
+        content:
+`“Totally normal.
+
+Just so I can help you feel confident: what part do you feel you need to think about most — the deposit, the timing, or whether you can really do this?
+
+(They answer.)
+
+Got it. Based on everything you told me about where you are and where you want to go, does waiting actually change anything… or does it just delay the result?”`,
+        note: "After isolating, rebuild clarity, then ask for the next step.",
+        buttons: [
+          { label: "Re-ask for commitment", target: "three_pillar_close" },
+          { label: "Back to Objection Menu", target: "objections_root" }
+        ]
+      },
+      obj_money: {
+        id: "obj_money",
+        title: "Objection – Money",
+        tag: "OBJECTION",
+        flow: "RDJ • Objections",
+        content:
+`“I hear you — money is tight for a lot of people right now.
+
+Two things though: this is a refundable deposit, and it’s also a signal to yourself that you’re done playing small.
+
+We do have flexible options — zero down with payments, or a smaller $1,500 option in some cases. If we found a structure that fit, would you *want* to move forward?”`,
+        note: "If they say yes, you move to logistics. If no, they’re not ready.",
+        buttons: [
+          { label: "They’re open to options", target: "three_pillar_close" },
+          { label: "They’re not willing", target: "exit_not_fit" },
+          { label: "Back to Objection Menu", target: "objections_root" }
+        ]
+      },
+      obj_spouse: {
+        id: "obj_spouse",
+        title: "Objection – Spouse/Partner",
+        tag: "OBJECTION",
+        flow: "RDJ • Objections",
+        content:
+`“Makes total sense — big decisions usually involve the people closest to us.
+
+What questions or concerns do you think they’d have if they were on this call with us?
+
+(They answer.)
+
+If we could give them clarity on those points and show them this is an investment in your shared future, would that help you move forward together?”`,
+        note: "Offer a 3-way follow-up call if needed.",
+        buttons: [
+          { label: "Set spouse call", target: "outcome_callback" },
+          { label: "They decide now anyway", target: "three_pillar_close" },
+          { label: "Back to Objection Menu", target: "objections_root" }
+        ]
+      },
+      obj_doubt: {
+        id: "obj_doubt",
+        title: "Objection – Not Sure It’ll Work",
+        tag: "OBJECTION",
+        flow: "RDJ • Objections",
+        content:
+`“That’s a fair concern — especially if you’ve tried things before.
+
+The truth is: the system is proven. The variable is always the person.
+
+What I *can* tell you is you won’t be doing this alone. There’s training, mentorship, and a proven track record from people who were exactly where you are now.
+
+Based on your own work ethic and what you told me, do you believe *you* could make this work if you committed?”`,
+        note: "Let them talk themselves into or out of it. Then close or exit.",
+        buttons: [
+          { label: "They believe they can", target: "three_pillar_close" },
+          { label: "They don’t believe", target: "exit_not_fit" },
+          { label: "Back to Objection Menu", target: "objections_root" }
+        ]
+      },
+      obj_burned: {
+        id: "obj_burned",
+        title: "Objection – Burned Before",
+        tag: "OBJECTION",
+        flow: "RDJ • Objections",
+        content:
+`“I get that completely — it sucks to invest in something and feel like it didn’t deliver.
+
+Out of curiosity, what specifically didn’t work last time — the quality of the training, the support, or the actual opportunity?”
+
+(They answer.)
+
+“Thank you for sharing that. The reason this is different is because you’re not just buying a course — you’re plugging into mentorship *and* real placement with proven offers.
+
+Given that difference, do you feel this could be the reset you were hoping the last thing would be?”`,
+        note: "Empathy first. Then differentiate. Then invite a decision.",
+        buttons: [
+          { label: "They’re open now", target: "three_pillar_close" },
+          { label: "Still closed off", target: "exit_not_fit" },
+          { label: "Back to Objection Menu", target: "objections_root" }
+        ]
+      },
+      three_pillar_close: {
+        id: "three_pillar_close",
+        title: "3-Pillar Close",
+        tag: "HIT",
+        flow: "RDJ • Final Close",
+        content:
+`“Alright, let me simplify this so we both know exactly where we stand.
+
+Pillar 1 – Money aside: do you *genuinely* want to do this? Yes or no.
+
+Pillar 2 – Do you believe that with Brad’s mentorship and this ecosystem, you’ll be making more money than you are right now?
+
+Pillar 3 – Can you afford to get started — either with the $5k deposit, a payment plan, or the $1,500 option?”`,
+        note: "If they’re yes/yes/yes, you close. If not, you isolate the stuck pillar.",
+        buttons: [
+          { label: "All 3 are YES", target: "outcome_close" },
+          { label: "One or more NO", target: "objections_root" }
+        ]
+      },
+      outcome_close: {
+        id: "outcome_close",
+        title: "They’re In – Close & Next Steps",
+        tag: "SUCCESS",
+        flow: "RDJ • Outcome",
+        content:
+`“Love it — that’s exactly what I wanted to hear.
+
+Here’s what we’ll do next: I’m going to send you the link right now. Let me know when you have it open on your screen.
+
+We’ll walk through it together, lock in your spot, and then I’ll map out your first 30 days so you know exactly what to expect.”`,
+        note: "From here you shut up and help them complete the process.",
+        buttons: [
+          { label: "Back to Start (New Call)", target: "start" }
+        ]
+      },
+      outcome_callback: {
+        id: "outcome_callback",
+        title: "Callback / Spouse Call Set",
+        tag: "PENDING",
+        flow: "RDJ • Outcome",
+        content:
+`“Cool — here’s what we’ll do.
+
+Let’s set a short follow-up with you and your spouse/partner so we can walk through this together and answer everything in one shot.
+
+What’s better — later today or tomorrow?”`,
+        note: "Book a firm time. Send calendar invite while they’re on.",
+        buttons: [
+          { label: "Back to Start", target: "start" }
+        ]
+      }
+    };
+
+    function renderNode(id) {
+      const node = nodes[id];
+      if (!node) return;
+      document.getElementById("cardTitle").textContent = node.title;
+      document.getElementById("cardTag").textContent = node.tag || "";
+      document.getElementById("cardFlow").textContent = node.flow || "RDJ • Real Training Flow";
+      document.getElementById("cardContent").textContent = node.content || "";
+      document.getElementById("cardNote").textContent = node.note || "";
+      document.getElementById("cardIdLabel").textContent = "Node: " + node.id;
+
+      const container = document.getElementById("cardButtons");
+      container.innerHTML = "";
+      if (node.buttons && node.buttons.length) {
+        node.buttons.forEach((btn, index) => {
+          const b = document.createElement("button");
+          b.textContent = btn.label;
+          b.className = "btn" + (index === 0 ? " btn-primary" : "");
+          if (node.buttons.length === 1) b.className += " btn-full";
+          b.onclick = () => renderNode(btn.target);
+          container.appendChild(b);
+        });
+      } else {
+        const back = document.createElement("button");
+        back.textContent = "Back to Start";
+        back.className = "btn btn-full btn-primary";
+        back.onclick = () => renderNode("start");
+        container.appendChild(back);
+      }
+    }
+
+    renderNode("start");
+  </script>
+</body>
+</html>
