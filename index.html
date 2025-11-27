@@ -4,362 +4,388 @@
   <meta charset="UTF-8" />
   <title>Real Training – Robert’s Closer Script</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <style>
+    :root {
+      --bg: #020617;
+      --bg-card: #020617;
+      --border-subtle: rgba(148, 163, 184, 0.35);
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --text-muted: #6b7280;
+      --danger: #f97373;
+      --radius-lg: 18px;
+      --shadow-lg: 0 22px 45px rgba(0, 0, 0, 0.55);
+    }
+
     * {
       box-sizing: border-box;
     }
 
-    html, body {
+    body {
       margin: 0;
       padding: 0;
       min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #020617;
-      color: #e5e7eb;
-    }
-
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: radial-gradient(circle at top, #0f172a 0, #020617 42%, #000 100%);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
 
     .app-shell {
       width: 100%;
       max-width: 960px;
-      padding: 16px;
+      margin: 0 auto;
+      padding: 16px 16px 32px;
     }
 
     .app-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 12px;
+      gap: 12px;
+      padding: 8px 4px 4px;
+    }
+
+    .app-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
     }
 
     .app-title {
-      font-size: 0.85rem;
-      letter-spacing: 0.18em;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
       text-transform: uppercase;
-      color: #9ca3af;
+      color: #f9fafb;
+      white-space: nowrap;
     }
 
-    .app-title span {
-      color: #f97316;
+    .app-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      max-width: 420px;
     }
 
-    .top-buttons {
+    .app-actions {
       display: flex;
       gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
-    .top-btn {
+    .chip-button {
       border-radius: 999px;
-      border: 1px solid #4b5563;
-      background: transparent;
-      color: #e5e7eb;
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.92);
+      color: var(--text-soft);
       padding: 6px 14px;
-      font-size: 0.72rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       cursor: pointer;
-      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      transition: background 0.15s ease, border-color 0.15s ease,
+        color 0.15s ease, transform 0.08s ease;
     }
 
-    .top-btn:hover {
-      background: #111827;
-      border-color: #f97316;
-      color: #f97316;
+    .chip-button span.icon {
+      font-size: 13px;
     }
 
-    .card-shell {
-      background: radial-gradient(circle at top, #111827 0%, #020617 55%, #000 100%);
-      border-radius: 18px;
-      padding: 24px 22px 20px;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
-      border: 1px solid #111827;
+    .chip-button:hover {
+      background: rgba(15, 23, 42, 1);
+      border-color: rgba(148, 163, 184, 0.8);
+      color: #e5e7eb;
+      transform: translateY(-0.5px);
+    }
+
+    .chip-button:active {
+      transform: translateY(0.5px) scale(0.99);
+    }
+
+    .chip-button.primary-chip {
+      border-color: rgba(56, 189, 248, 0.6);
+      background: radial-gradient(circle at top left, #0ea5e9 0, #0f172a 48%);
+      color: #e5f5ff;
+    }
+
+    .chip-button.primary-chip:hover {
+      background: radial-gradient(circle at top left, #38bdf8 0, #020617 55%);
+      border-color: #7dd3fc;
+    }
+
+    .divider {
+      height: 1px;
+      margin-top: 10px;
+      background: linear-gradient(
+        to right,
+        transparent,
+        rgba(148, 163, 184, 0.35),
+        transparent
+      );
+    }
+
+    .card-wrapper {
+      margin: 20px auto 0;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, #111827 0, #020617 60%);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      padding: 28px 32px 24px;
+      max-width: 820px;
+      margin: 24px auto 12px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at top right,
+        rgba(56, 189, 248, 0.21),
+        transparent 55%
+      );
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
     }
 
     .card-header-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      gap: 8px;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 12px;
     }
 
-    .phase-label {
-      font-size: 0.7rem;
+    .card-tag {
+      font-size: 11px;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      letter-spacing: 0.22em;
-      color: #f97316;
+      color: #a5b4fc;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .step-counter {
-      font-size: 0.7rem;
-      color: #6b7280;
+    .card-tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #38bdf8;
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25);
+    }
+
+    .card-counter {
+      font-size: 11px;
+      color: var(--text-muted);
     }
 
     .card-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-      color: #f9fafb;
+      font-size: 22px;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin: 0 0 8px;
     }
 
     .card-body {
-      font-size: 1.02rem;
+      font-size: 19px;
       line-height: 1.6;
-      color: #e5e7eb;
-      min-height: 240px;
-      max-height: 420px;
-      overflow-y: auto;
-      padding-right: 6px;
+      color: var(--text-main);
     }
 
     .card-body p {
-      margin: 0 0 10px;
+      margin: 0 0 12px;
     }
 
-    .card-body p.script {
-      font-size: 1.06rem;
+    .card-body p:last-child {
+      margin-bottom: 0;
     }
 
-    .card-body p.note {
-      font-size: 0.9rem;
-      color: #9ca3af;
+    .card-body .internal-note {
+      font-size: 14px;
+      color: var(--text-muted);
+      border-left: 2px solid rgba(148, 163, 184, 0.6);
+      padding-left: 10px;
+      margin-top: 10px;
     }
 
-    .card-body ul {
-      margin: 6px 0 10px 18px;
-      padding: 0;
-    }
-
-    .card-body li {
-      margin-bottom: 4px;
-    }
-
-    .buttons-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .btn {
-      flex: 1;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      padding: 11px 18px;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      cursor: pointer;
-      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.06s ease;
-    }
-
-    .btn:active {
-      transform: translateY(1px);
-    }
-
-    .btn-secondary {
-      background: #020617;
-      border-color: #4b5563;
-      color: #e5e7eb;
-    }
-
-    .btn-secondary:hover {
-      background: #030712;
-      border-color: #6b7280;
-    }
-
-    .btn-primary {
-      background: #ef4444;
-      border-color: #ef4444;
-      color: #f9fafb;
+    .card-body strong {
       font-weight: 600;
+      color: #f9fafb;
     }
 
-    .btn-primary:hover {
-      background: #dc2626;
-      border-color: #dc2626;
+    .pill-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
     }
 
-    .cards {
-      position: relative;
+    .pill-button {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.96);
+      color: #e5e7eb;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.12s ease, border-color 0.12s ease,
+        transform 0.06s ease;
+      text-align: center;
+      white-space: nowrap;
     }
 
-    .card {
-      display: none;
+    .pill-button span.icon {
+      margin-right: 6px;
+      font-size: 14px;
     }
 
-    .card.active {
-      display: block;
+    .pill-button:hover {
+      background: rgba(30, 64, 175, 0.8);
+      border-color: #7dd3fc;
+      transform: translateY(-0.5px);
     }
 
-    .progress-row {
+    .pill-button:active {
+      transform: translateY(0.5px) scale(0.99);
+    }
+
+    .card-footer {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-top: 10px;
+      justify-content: space-between;
+      margin-top: 14px;
+      gap: 12px;
     }
 
     .progress-track {
       flex: 1;
-      height: 4px;
-      background: #111827;
+      height: 6px;
       border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(51, 65, 85, 0.9);
       overflow: hidden;
     }
 
     .progress-bar {
       height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(
+        90deg,
+        #38bdf8,
+        #22c55e,
+        #facc15,
+        #f97316,
+        #38bdf8
+      );
+      background-size: 200% 100%;
+      animation: shimmer 7s linear infinite;
       width: 0%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #f97316, #ef4444);
-      transition: width 0.2s ease;
     }
 
-    .progress-label {
-      font-size: 0.72rem;
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
+    @keyframes shimmer {
+      0% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 200% 50%;
+      }
     }
 
-    .badge-row {
-      margin-bottom: 8px;
+    .nav-buttons {
       display: flex;
-      flex-wrap: wrap;
       gap: 8px;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #9ca3af;
     }
 
-    .badge {
-      padding: 3px 8px;
+    .nav-button {
+      min-width: 88px;
+      padding: 8px 16px;
       border-radius: 999px;
-      border: 1px solid #374151;
+      border: 1px solid rgba(148, 163, 184, 0.7);
       background: rgba(15, 23, 42, 0.95);
-    }
-
-    .subheading {
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #9ca3af;
-      margin-bottom: 6px;
-    }
-
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin: 6px 0 10px;
-    }
-
-    .pill {
-      font-size: 0.78rem;
-      padding: 4px 9px;
-      border-radius: 999px;
-      border: 1px solid #374151;
-      background: #020617;
       color: #e5e7eb;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background 0.12s ease, border-color 0.12s ease,
+        transform 0.06s ease, color 0.06s ease;
     }
 
-    .overlay-tag {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #f97316;
-      margin-bottom: 4px;
+    .nav-button.primary {
+      border-color: rgba(56, 189, 248, 0.8);
+      background: radial-gradient(circle at top left, #0ea5e9 0, #0b1120 70%);
+      color: #e0f2fe;
     }
 
-    .company-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
+    .nav-button:disabled {
+      opacity: 0.35;
+      cursor: default;
+      transform: none;
     }
 
-    .company-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 10px;
+    .nav-button:not(:disabled):hover {
+      background: rgba(15, 23, 42, 1);
+      border-color: #cbd5f5;
+      transform: translateY(-0.5px);
+    }
+
+    .nav-button.primary:not(:disabled):hover {
+      background: radial-gradient(circle at top left, #38bdf8 0, #020617 70%);
+      border-color: #7dd3fc;
+    }
+
+    .nav-button:active:not(:disabled) {
+      transform: translateY(0.5px) scale(0.99);
+    }
+
+    .nav-button span.icon {
+      font-size: 14px;
+    }
+
+    .overlay-label {
+      font-size: 11px;
+      color: var(--text-muted);
       margin-top: 4px;
+      text-align: right;
     }
 
-    .company-tile {
-      border-radius: 14px;
-      padding: 10px 12px;
-      border: 1px solid #1f2937;
-      background: radial-gradient(circle at top, #111827 0%, #020617 60%);
-      cursor: pointer;
-      transition: border-color 0.15s ease, transform 0.08s ease, box-shadow 0.15s ease;
-    }
-
-    .company-tile:hover {
-      border-color: #f97316;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-      transform: translateY(-1px);
-    }
-
-    .company-tile-title {
-      font-size: 0.86rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 4px;
-      color: #f9fafb;
-    }
-
-    .company-tile-body {
-      font-size: 0.8rem;
-      color: #9ca3af;
-    }
-
-    .stacked-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .btn-ghost {
-      border-radius: 999px;
-      border: 1px dashed #4b5563;
-      background: transparent;
-      padding: 9px 14px;
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #9ca3af;
-      cursor: pointer;
-      text-align: center;
-      transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
-    }
-
-    .btn-ghost:hover {
-      border-color: #f97316;
-      color: #f97316;
-      background: #020617;
-    }
-
-    @media (max-width: 640px) {
-      .card-shell {
-        padding: 16px 14px 16px;
+    @media (max-width: 600px) {
+      .card {
+        padding: 20px 16px 18px;
+        margin-top: 16px;
+      }
+      .card-title {
+        font-size: 19px;
       }
       .card-body {
-        min-height: 220px;
+        font-size: 17px;
       }
-      .buttons-row {
-        flex-direction: column-reverse;
+      .app-title {
+        font-size: 18px;
       }
     }
   </style>
@@ -367,910 +393,737 @@
 <body>
   <div class="app-shell">
     <header class="app-header">
-      <div class="app-title">
-        REAL TRAINING • <span>CLOSER SCRIPT</span>
+      <div class="app-title-block">
+        <div class="app-title">Real Training &mdash; Closer Script</div>
+        <div class="app-subtitle">
+          Teleprompter-style flow for Robert&rsquo;s calls &mdash; companies and
+          objections are always one tap away.
+        </div>
       </div>
-      <div class="top-buttons">
-        <button class="top-btn" id="btn-companies">Companies</button>
-        <button class="top-btn" id="btn-objections">Objections</button>
+      <div class="app-actions">
+        <button id="companiesBtn" class="chip-button primary-chip">
+          <span class="icon">🏢</span>
+          <span>Companies</span>
+        </button>
+        <button id="objectionsBtn" class="chip-button">
+          <span class="icon">⚠️</span>
+          <span>Objections</span>
+        </button>
       </div>
     </header>
 
-    <main class="card-shell">
-      <div class="card-header-row">
-        <div>
-          <div class="phase-label" id="phase-label">Opening</div>
-          <div class="step-counter" id="step-counter">Card 1 of 25</div>
+    <div class="divider"></div>
+
+    <main class="card-wrapper">
+      <section class="card">
+        <div class="card-inner">
+          <div class="card-header-row">
+            <div id="cardTag" class="card-tag">
+              <span class="card-tag-dot"></span>
+              <span id="cardTagText">Opening</span>
+            </div>
+            <div id="cardCounter" class="card-counter">Card 1 of 11</div>
+          </div>
+          <h1 id="cardTitle" class="card-title">Greeting &amp; Setup</h1>
+          <div id="cardBody" class="card-body">
+            <!-- script injected by JS -->
+          </div>
+          <div id="overlayLabel" class="overlay-label" style="display: none;">
+            Side view (does not affect main progress)
+          </div>
+          <footer class="card-footer">
+            <div class="progress-track">
+              <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <div class="nav-buttons">
+              <button id="backBtn" class="nav-button">
+                <span class="icon">←</span>
+                <span>Back</span>
+              </button>
+              <button id="nextBtn" class="nav-button primary">
+                <span>Next</span>
+                <span class="icon">→</span>
+              </button>
+            </div>
+          </footer>
         </div>
-        <div class="progress-row">
-          <div class="progress-track">
-            <div class="progress-bar" id="progress-bar"></div>
-          </div>
-          <div class="progress-label">Progress</div>
-        </div>
-      </div>
-
-      <div class="cards">
-
-        <!-- ===================== MAIN FLOW CARDS (1–25) ===================== -->
-
-        <!-- CARD 1 -->
-        <section class="card active" data-step="1" data-phase="Opening">
-          <div class="card-title">Greeting &amp; Setup</div>
-          <div class="card-body">
-            <p class="script">“Hey {first_name}, good to meet you. Thanks for hopping on.”</p>
-
-            <p class="script">“My name is Robert, and I work directly with Brad Lea’s team. I talk to people who want to level up their sales skills and income.”</p>
-
-            <p class="script">“Today is about seeing where you’re at, what you want, and whether this system and these opportunities are a good fit for you.”</p>
-
-            <p class="script">“Does that work for you?”</p>
-
-            <p class="script">“Quick heads up — this call may be recorded for training and quality purposes. Is that okay with you?”</p>
-
-            <p class="script">“This will take about 20–30 minutes. I’ll ask you a few questions, walk you through how Brad’s system works, and if it makes sense, we’ll go over how to get you started today. Sound good?”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="1">Back</button>
-            <button class="btn btn-primary" data-next="2">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 2 -->
-        <section class="card" data-step="2" data-phase="Opening">
-          <div class="card-title">Culture Frame</div>
-          <div class="card-body">
-            <p class="script">“Before we dive in, I want to set a quick frame.”</p>
-
-            <p class="script">“Brad is big on culture. He only wants to work with people who are grateful, accountable, coachable, and driven — people who are serious about leveling up, not just curious.”</p>
-
-            <p class="script">“So as we go through this, I’m listening for those things in you — how you think, how you respond, and whether this really lines up with where you want to go.”</p>
-
-            <p class="script">“My job is simple: if it’s a fit, I’ll show you exactly how to plug in. If it’s not, we’ll shake hands and be honest about that too.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="1">Back</button>
-            <button class="btn btn-primary" data-next="3">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 3 -->
-        <section class="card" data-step="3" data-phase="Discovery">
-          <div class="card-title">Quick Interview Setup</div>
-          <div class="card-body">
-            <p class="script">“Cool. I’m going to ask you a few quick questions so I understand where you’re starting from and what you’re aiming for.”</p>
-
-            <p class="script">“There are no right or wrong answers — I just want the real picture so I can tell you honestly whether this is the right move for you.”</p>
-
-            <p class="script">“Sound good?”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="2">Back</button>
-            <button class="btn btn-primary" data-next="4">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 4 – DISCOVERY QUESTIONS -->
-        <section class="card" data-step="4" data-phase="Discovery">
-          <div class="card-title">Discovery Questions</div>
-          <div class="card-body">
-            <p class="script">“First one — where are you calling in from?”</p>
-
-            <p class="script">“Are you familiar with Brad Lea and his content?”</p>
-            <p class="note">If <strong>yes</strong>, ask: “Nice. What have you seen from him so far?”<br>
-            If <strong>no</strong>, tap the Companies button later and briefly frame Brad / ecosystem when needed.</p>
-
-            <p class="script">“What do you do for work right now?”</p>
-            <p class="script">“How long have you been doing that?”</p>
-
-            <p class="script">“What kind of sales experience do you have?”</p>
-            <p class="script">“Were you closing over the phone, in person, or both? And what were you selling, at what price point?”</p>
-
-            <p class="script">“Have you earned commissions before?”</p>
-
-            <p class="script">“What was your best year in commission-based income?”</p>
-
-            <p class="script">“What are you going to do with the money when you start making more? Is it paying off debt, investing back into a business, taking care of family — what’s the mission for you?”</p>
-
-            <p class="script">“Do you do anything right now for personal development — reading, training, fitness, gratitude, anything like that?”</p>
-
-            <p class="note">
-              • If they’ve earned $250–300K+ in the last 1–2 years in commission roles,<br>
-              mentally tag as a strong future placement candidate for direct referral.<br>
-              • Note energy, clarity, and whether their goals feel real and specific.
-            </p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="3">Back</button>
-            <button class="btn btn-primary" data-next="5">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 5 – REFLECTION -->
-        <section class="card" data-step="5" data-phase="Discovery">
-          <div class="card-title">Reflect &amp; Align</div>
-          <div class="card-body">
-            <p class="script">“Alright, based on everything you’ve shared, here’s what I’m seeing…”</p>
-
-            <p class="note"><strong>This is where YOU speak — mirror back 2–3 strengths, lightly mention one growth area.</strong></p>
-
-            <p class="script">“What I’m really looking for is gratitude, accountability, coachability, and real drive — and I’m getting a clear sense of that from you.”</p>
-
-            <p class="script">“Let me show you what Brad built, and how the system actually works.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="4">Back</button>
-            <button class="btn btn-primary" data-next="6">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 6 – BRAD & ECOSYSTEM -->
-        <section class="card" data-step="6" data-phase="Frame">
-          <div class="card-title">Brad &amp; Ecosystem Snapshot</div>
-          <div class="card-body">
-            <p class="script">“Training high-level closers — that’s the mission here.”</p>
-
-            <p class="script">“Brad is a master salesman and one of the most documented voices in the sales space. He’s worked with names like Tony Robbins, Grant Cardone, John Maxwell, Les Brown, Zig Ziglar, Ed Mylett — and brands like General Motors, the UFC, Top Chef, and a long list of franchises and training companies.”</p>
-
-            <p class="script">“On top of that, Brad owns multiple companies across software, financial services, events, coaching, and sales training. Those are the vehicles we plug people into once they’re trained and producing.”</p>
-
-            <p class="script">“Real Training is the engine he built so people can learn the exact mindset, skill set, and daily habits that helped him become ultra-successful through sales — then apply it in their own life and career.”</p>
-
-            <p class="note">If they don’t really know Brad, keep this card open a bit longer and slow down. You can always tap the <strong>Companies</strong> button later to give more detail on the ecosystem.</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="5">Back</button>
-            <button class="btn btn-primary" data-next="7">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 7 – THREE PILLARS -->
-        <section class="card" data-step="7" data-phase="Frame">
-          <div class="card-title">The Three Pillars</div>
-          <div class="card-body">
-            <p class="script">“Real Training is built around three pillars: mindset, skill set, and habits.”</p>
-
-            <p class="script">“Mindset is how Brad thinks about deals, money, and people — how he frames opportunity, handles rejection, and keeps his head right.”</p>
-
-            <p class="script">“Skill set is the fundamentals and advanced closing techniques — how to open, qualify, frame, present, handle objections, and close without being weird or pushy.”</p>
-
-            <p class="script">“Habits are the daily routines and standards that keep production consistent — how you structure your day, track your numbers, and stay accountable.”</p>
-
-            <p class="script">“The goal isn’t to just give you information. The goal is to turn you into a producer.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="6">Back</button>
-            <button class="btn btn-primary" data-next="8">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 8 – PLACEMENT PROMISE -->
-        <section class="card" data-step="8" data-phase="Frame">
-          <div class="card-title">Training &amp; Placement</div>
-          <div class="card-body">
-            <p class="script">“Once you’re trained and producing, there are multiple companies in Brad’s ecosystem where performers can be placed — depending on fit and timing.”</p>
-
-            <p class="script">“When you join Real Training and complete the program, you’re guaranteed placement into one of Brad’s core companies. Next year there will also be opportunities with partner companies that plug into the same system.”</p>
-
-            <p class="script">“This isn’t ‘here’s a course, good luck.’ The point is to train you, then plug you into a real vehicle where you can use the skills.”</p>
-
-            <p class="note">You can tap <strong>Companies</strong> at any point if they want details about LightSpeed VT, Real Financial, Real Merchant, Real Coach, Real Success Events, Dropping Bombs, Closer School, or Real Training itself.</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="7">Back</button>
-            <button class="btn btn-primary" data-next="9">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 9 – 5K COMMITMENT DEPOSIT -->
-        <section class="card" data-step="9" data-phase="Offer">
-          <div class="card-title">$5,000 Commitment Deposit</div>
-          <div class="card-body">
-            <p class="script">“To join Real Training, there’s a $5,000 commitment deposit.”</p>
-
-            <p class="script">“I call it a commitment deposit on purpose — it’s not a random fee. It’s skin in the game so you take this seriously and actually finish.”</p>
-
-            <p class="script">“The $5,000 can be structured a few ways — paid in full, split, or financed — but the agreement is the same.”</p>
-
-            <p class="script">“You complete Real Training, you onboard into one of Brad’s companies and complete their training, and then you help that company generate $50,000 in revenue.”</p>
-
-            <p class="script">“When that happens, your full $5,000 commitment deposit is refunded back to you. So if you execute, the training ends up costing you nothing.”</p>
-
-            <p class="script">“You’re not betting on Brad — he’s already built this. You’re betting on yourself.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="8">Back</button>
-            <button class="btn btn-primary" data-next="10">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 10 – WHY IT ISN’T FREE -->
-        <section class="card" data-step="10" data-phase="Offer">
-          <div class="card-title">Why There’s a Deposit</div>
-          <div class="card-body">
-            <p class="script">“Brad used to give the training away for free.”</p>
-
-            <p class="script">“What he found was — people didn’t show up, didn’t finish, and quit on themselves. Meanwhile he’s paying coaches and constantly upgrading the system.”</p>
-
-            <p class="script">“So he changed the model. Now there’s skin in the game. The $5,000 comes back when <em>you</em> do your part.”</p>
-
-            <p class="script">“If you don’t give up, we won’t give up on you.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="9">Back</button>
-            <button class="btn btn-primary" data-next="11">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 11 – PRIMARY CLOSE -->
-        <section class="card" data-step="11" data-phase="Close">
-          <div class="card-title">Primary Close</div>
-          <div class="card-body">
-            <p class="script">“Based on everything we’ve covered — your background, what you want to earn, how the program and placement works…”</p>
-
-            <p class="script">“…does it make sense for you to get started with Real Training and bet on yourself today?”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="10">Back</button>
-            <button class="btn btn-primary" data-next="12">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 12 – MONEY TIGHT (lead-in to objections hub) -->
-        <section class="card" data-step="12" data-phase="Objections">
-          <div class="card-title">Handle Objections</div>
-          <div class="card-body">
-            <p class="script">“Totally fair — most people have at least one question or concern before they lock it in.”</p>
-
-            <p class="script">“Is it more about the money, the timing, talking to someone else, or wondering if this will actually work for you?”</p>
-
-            <p class="note">Use the <strong>Objections</strong> button at the top right to pull up specific objection cards while they talk: Money, Think About It, Spouse, What If It Doesn’t Work, etc.</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="11">Back</button>
-            <button class="btn btn-primary" data-next="13">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 13 – MONEY TIGHT (script) -->
-        <section class="card" data-step="13" data-phase="Objections">
-          <div class="card-title">Objection – Money Is Tight</div>
-          <div class="card-body">
-            <p class="script">“I get it — totally fair.”</p>
-
-            <p class="script">“The way I look at it, if you plan on producing $50,000 anyway, this money is coming back to you.”</p>
-
-            <p class="script">“The real question isn’t ‘can you afford $5,000?’ The real question is — do you believe you’ll execute and follow through to the point where you earn at least $50,000?”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="12">Back</button>
-            <button class="btn btn-primary" data-next="14">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 14 – THINK ABOUT IT -->
-        <section class="card" data-step="14" data-phase="Objections">
-          <div class="card-title">Objection – “I Need to Think About It”</div>
-          <div class="card-body">
-            <p class="script">“I respect that — thinking is good.”</p>
-
-            <p class="script">“Usually when someone says they need to think about it, it means there’s one or two things that aren’t totally clear yet.”</p>
-
-            <p class="script">“What specifically are you unsure about, or what information do you still need to feel 100% solid?”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="13">Back</button>
-            <button class="btn btn-primary" data-next="15">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 15 – SPOUSE -->
-        <section class="card" data-step="15" data-phase="Objections">
-          <div class="card-title">Objection – “I Need to Talk to My Spouse”</div>
-          <div class="card-body">
-            <p class="script">“Totally understand — they should be in the loop.”</p>
-
-            <p class="script">“When you talk to them, what’s your plan for how you’re going to explain why you want to do this, and what it could do for your income and your future?”</p>
-
-            <p class="script">“Money aside, is this something <em>you</em> want to move forward with?”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="14">Back</button>
-            <button class="btn btn-primary" data-next="16">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 16 – WHAT IF IT DOESN’T WORK -->
-        <section class="card" data-step="16" data-phase="Objections">
-          <div class="card-title">Objection – “What If It Doesn’t Work?”</div>
-          <div class="card-body">
-            <p class="script">“Great question.”</p>
-
-            <p class="script">“The way this doesn’t work is if you don’t show up or you quit.”</p>
-
-            <p class="script">“If you don’t give up, we won’t give up on you. Once you complete the training, get placed, and help generate $50,000 in revenue, your commitment deposit comes back to you.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="15">Back</button>
-            <button class="btn btn-primary" data-next="17">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 17 – HOW PAYMENT WORKS -->
-        <section class="card" data-step="17" data-phase="Offer">
-          <div class="card-title">How Payment Works</div>
-          <div class="card-body">
-            <p class="script">“If we move forward, I’ll send you a secure payment link with a few options.”</p>
-
-            <p class="script">“You’ll choose whether you want to structure the $5,000 as paid in full, split, or financed.”</p>
-
-            <p class="script">“There’s also a $1,500 option that doesn’t include the refund — that’s for people who see the value in the training and are willing to spend the money either way. The payments on that can be well under $100 a month, and a lot of people will keep their current role while they ramp this up part time.”</p>
-
-            <p class="note">You’ll send the actual link outside the app — this card is just your teleprompter.</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="16">Back</button>
-            <button class="btn btn-primary" data-next="18">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 18 – REFUND LOGIC -->
-        <section class="card" data-step="18" data-phase="Offer">
-          <div class="card-title">Refund Logic (Clearly)</div>
-          <div class="card-body">
-            <p class="script">“Just so we’re 100% clear…”</p>
-
-            <p class="script">“The full $5,000 commitment deposit is refundable once you complete Real Training, complete the company’s onboarding after placement, and generate at least $50,000 in revenue with that company.”</p>
-
-            <p class="script">“The $1,500 option is the same training and the same access — the only difference is it’s <em>not</em> refundable. That option is usually best for people who just want the skills and are comfortable spending the $1,500 no matter what.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="17">Back</button>
-            <button class="btn btn-primary" data-next="19">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 19 – REVERSE PSYCH CLOSE -->
-        <section class="card" data-step="19" data-phase="Close">
-          <div class="card-title">This May Not Be for Everyone</div>
-          <div class="card-body">
-            <p class="script">“This isn’t for everyone — and that’s okay.”</p>
-
-            <p class="script">“If you’re unsure, I’d rather you hold off and come back when you’re truly ready. The last thing I want is for you to sign up for something you’ll regret or half-do.”</p>
-
-            <p class="script">“But if you’re looking at this thinking, ‘If I stick with it, this could seriously upgrade my life,’ then this is exactly who it’s built for.”</p>
-
-            <p class="script">“The best salespeople aren’t in the business of convincing people who are unsure. They’re in the business of helping the right people get what they want — and when that happens, everybody wins.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="18">Back</button>
-            <button class="btn btn-primary" data-next="20">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 20 – FINAL CONFIRM -->
-        <section class="card" data-step="20" data-phase="Close">
-          <div class="card-title">Final Check-In</div>
-          <div class="card-body">
-            <p class="script">“So with everything we’ve covered — the training, the placement, the refund, and the options…”</p>
-
-            <p class="script">“Are you ready to bet on yourself and lock this in?”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="19">Back</button>
-            <button class="btn btn-primary" data-next="21">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 21 – IF YES -->
-        <section class="card" data-step="21" data-phase="Close">
-          <div class="card-title">If They’re Ready</div>
-          <div class="card-body">
-            <p class="script">“Perfect. Here’s what we’ll do.”</p>
-
-            <p class="script">“I’ll send you the payment link with the options we talked about. Once that’s handled, you’ll get an email with your login and onboarding instructions.”</p>
-
-            <p class="script">“Start with the first modules right away. The faster you implement, the faster you move toward placement and that $50,000 revenue mark.”</p>
-
-            <p class="script">“If you have questions as you go, reach out. We’re here to help — I’m excited to see what you do with this.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="20">Back</button>
-            <button class="btn btn-primary" data-next="22">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 22 – IF NO / NOT NOW -->
-        <section class="card" data-step="22" data-phase="Close">
-          <div class="card-title">If They’re Not Ready</div>
-          <div class="card-body">
-            <p class="script">“No worries — like I said, this isn’t for everyone and not everyone is ready right now.”</p>
-
-            <p class="script">“I’d rather you wait and come back when you’re fully committed than jump in halfway and second-guess it.”</p>
-
-            <p class="script">“In the meantime, keep sharpening your skills, stack some cash, and when you’re ready to really bet on yourself, we can revisit this.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="21">Back</button>
-            <button class="btn btn-primary" data-next="23">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 23 – 1500 OPTION RECAP -->
-        <section class="card" data-step="23" data-phase="Offer">
-          <div class="card-title">$1,500 Option (For Pure Training)</div>
-          <div class="card-body">
-            <p class="script">“Before we wrap, I do want you to know there’s also the $1,500 option.”</p>
-
-            <p class="script">“It’s the same training, the same content, and the same access — the only difference is that it’s not refundable.”</p>
-
-            <p class="script">“That’s usually better for people who simply want the skills, don’t need the deposit back, and like the idea of spreading out smaller payments — sometimes under $100 a month — while they keep working their current role.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="22">Back</button>
-            <button class="btn btn-primary" data-next="24">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 24 – PAYMENT LINK REMINDER -->
-        <section class="card" data-step="24" data-phase="Close">
-          <div class="card-title">Send Payment Link</div>
-          <div class="card-body">
-            <p class="script">“If you’re ready, we’ll pick the option that makes the most sense, I’ll send the link, and we’ll get you moving.”</p>
-
-            <p class="note">Use the external payment docs for:<br>
-            • $5,000 paid in full<br>
-            • $2,500 / $2,500 split<br>
-            • $5,000 financed<br>
-            • $1,500 non-refundable option<br>
-            • Coaching-style financing if applicable.</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="23">Back</button>
-            <button class="btn btn-primary" data-next="25">Next</button>
-          </div>
-        </section>
-
-        <!-- CARD 25 – WRAP UP -->
-        <section class="card" data-step="25" data-phase="Close">
-          <div class="card-title">Wrap-Up &amp; Next Steps</div>
-          <div class="card-body">
-            <p class="script">“Alright, we’re set.”</p>
-
-            <p class="script">“You’ll see an email come through with your login and onboarding instructions. Make sure you whitelist it and check spam if you don’t see it.”</p>
-
-            <p class="script">“Start the first modules as soon as you can — even 30–60 minutes a day adds up fast.”</p>
-
-            <p class="script">“If anything comes up, reach out. I appreciate your time today — I’m excited to see what you build with this.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-prev="24">Back</button>
-            <button class="btn btn-primary" data-restart="true">Restart Deck</button>
-          </div>
-        </section>
-
-        <!-- ===================== COMPANIES HUB & DETAIL CARDS ===================== -->
-
-        <!-- COMPANIES HUB -->
-        <section class="card overlay-card" id="companies-hub">
-          <div class="badge-row">
-            <span class="badge">Brad’s Companies</span>
-          </div>
-          <div class="card-title">Company Hub</div>
-          <div class="card-body">
-            <p class="script">Use this when a prospect wants to know more about the vehicles they can plug into once they’re trained and producing.</p>
-
-            <div class="company-grid">
-              <div class="company-tile" data-company-open="lightspeed">
-                <div class="company-tile-title">LightSpeed VT</div>
-                <div class="company-tile-body">Interactive training SaaS used by top brands and experts.</div>
-              </div>
-              <div class="company-tile" data-company-open="real-financial">
-                <div class="company-tile-title">Real Financial</div>
-                <div class="company-tile-body">Life insurance &amp; annuities with big upside and team building.</div>
-              </div>
-              <div class="company-tile" data-company-open="real-merchant">
-                <div class="company-tile-title">Real Merchant</div>
-                <div class="company-tile-body">Payment processing with residuals &amp; portfolio equity.</div>
-              </div>
-              <div class="company-tile" data-company-open="real-coach">
-                <div class="company-tile-title">Real Coach</div>
-                <div class="company-tile-body">Build, package, and sell coaching programs.</div>
-              </div>
-              <div class="company-tile" data-company-open="real-success">
-                <div class="company-tile-title">Real Success Events</div>
-                <div class="company-tile-body">Live events at Brad’s HQ &amp; partner venues.</div>
-              </div>
-              <div class="company-tile" data-company-open="closer-school">
-                <div class="company-tile-title">Closer School</div>
-                <div class="company-tile-body">Standalone sales training &amp; certifications.</div>
-              </div>
-              <div class="company-tile" data-company-open="dropping-bombs">
-                <div class="company-tile-title">Dropping Bombs</div>
-                <div class="company-tile-body">Top entrepreneurship podcast &amp; media platform.</div>
-              </div>
-              <div class="company-tile" data-company-open="real-training">
-                <div class="company-tile-title">Real Training</div>
-                <div class="company-tile-body">Core engine that feeds all of the above.</div>
-              </div>
-            </div>
-
-            <div class="stacked-buttons">
-              <button class="btn-ghost" data-back-script>Back to Script</button>
-            </div>
-          </div>
-        </section>
-
-        <!-- LIGHTSPEED VT -->
-        <section class="card overlay-card company-card" data-company="lightspeed">
-          <div class="overlay-tag">Company Deep Dive</div>
-          <div class="company-name">LightSpeed VT</div>
-          <div class="card-body">
-            <p class="script">“LightSpeed VT is Brad’s flagship software company — it’s an interactive training platform used by heavy hitters like Tony Robbins, Grant Cardone, the UFC, Top Chef, major franchises, real estate trainers, and tons of niche experts.”</p>
-
-            <p class="script">“They use it to deliver world-class, interactive training that actually gets consumed and implemented — not just videos that sit on a shelf.”</p>
-
-            <p class="script">“As a closer, you’re offering high-value SaaS packages to companies and influencers who want to build or scale their own training systems.”</p>
-
-            <p class="script">“Commissions are a flat 20% on the deals you close, with price points that can reach into the tens of thousands per client. You’re selling a proven, legacy-type product that creates real impact for the people using it.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-open-companies-hub>Back to Companies</button>
-            <button class="btn btn-primary" data-back-script>Back to Script</button>
-          </div>
-        </section>
-
-        <!-- REAL FINANCIAL -->
-        <section class="card overlay-card company-card" data-company="real-financial">
-          <div class="overlay-tag">Company Deep Dive</div>
-          <div class="company-name">Real Financial</div>
-          <div class="card-body">
-            <p class="script">“Real Financial is Brad’s financial services organization focused on life insurance, annuities, and related products.”</p>
-
-            <p class="script">“You earn strong upfront commissions on policies, plus the ability to build a team as more people come into the organization.”</p>
-
-            <p class="script">“Like Real Merchant, you’re essentially building a book of business. That book can create ongoing income and, long term, becomes an asset you can potentially sell back to the company.”</p>
-
-            <p class="script">“It’s ideal for people who are comfortable talking about money, protection, and long-term plans — and who like the idea of stacking residual-style income on top of their closing.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-open-companies-hub>Back to Companies</button>
-            <button class="btn btn-primary" data-back-script>Back to Script</button>
-          </div>
-        </section>
-
-        <!-- REAL MERCHANT -->
-        <section class="card overlay-card company-card" data-company="real-merchant">
-          <div class="overlay-tag">Company Deep Dive</div>
-          <div class="company-name">Real Merchant Services</div>
-          <div class="card-body">
-            <p class="script">“Real Merchant helps businesses save money on their payment processing while giving agents strong upfront commissions plus monthly residual income.”</p>
-
-            <p class="script">“You’re offering a better way to process payments — something every business already needs. You earn around 20% on the deals you bring in, plus a slice of the ongoing processing fees.”</p>
-
-            <p class="script">“Over time, you’re building a book of business — a portfolio of accounts that throws off monthly residuals and can be sold back to the company for a multiple of that recurring revenue.”</p>
-
-            <p class="script">“The team helps you close your first deals while you’re learning the ropes, so you’re not out there guessing on your own.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-open-companies-hub>Back to Companies</button>
-            <button class="btn btn-primary" data-back-script>Back to Script</button>
-          </div>
-        </section>
-
-        <!-- REAL COACH -->
-        <section class="card overlay-card company-card" data-company="real-coach">
-          <div class="overlay-tag">Company Deep Dive</div>
-          <div class="company-name">Real Coach</div>
-          <div class="card-body">
-            <p class="script">“Real Coach is a coaching business accelerator — it helps people build, package, and sell their own coaching programs using proven frameworks and support.”</p>
-
-            <p class="script">“The program is built with deep experience from the Tony Robbins ecosystem, so you’re plugging into systems that have already been battle-tested at scale.”</p>
-
-            <p class="script">“As a closer, you’re talking to coaches, experts, and thought-leaders who want to turn their knowledge into a real business, not just a side hobby.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-open-companies-hub>Back to Companies</button>
-            <button class="btn btn-primary" data-back-script>Back to Script</button>
-          </div>
-        </section>
-
-        <!-- REAL SUCCESS EVENTS -->
-        <section class="card overlay-card company-card" data-company="real-success">
-          <div class="overlay-tag">Company Deep Dive</div>
-          <div class="company-name">Real Success Events</div>
-          <div class="card-body">
-            <p class="script">“Real Success Events is all about premium, content-rich events — both at Brad’s Vegas headquarters and with partners around the world.”</p>
-
-            <p class="script">“You’re selling tickets, seats, and event packages into environments where people come to level up, network, and get access to top-tier information.”</p>
-
-            <p class="script">“If you like high energy, short sales cycles, and live event environments, this lane is a great fit.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-open-companies-hub>Back to Companies</button>
-            <button class="btn btn-primary" data-back-script>Back to Script</button>
-          </div>
-        </section>
-
-        <!-- CLOSER SCHOOL -->
-        <section class="card overlay-card company-card" data-company="closer-school">
-          <div class="overlay-tag">Company Deep Dive</div>
-          <div class="company-name">Closer School</div>
-          <div class="card-body">
-            <p class="script">“Closer School is Brad’s sales-training brand — programs, content, and certifications for closers at all levels.”</p>
-
-            <p class="script">“A lot of what Brad teaches inside Real Training is drawn from years of building Closer School. The difference is that Real Training ties those skills directly into placement with his companies.”</p>
-
-            <p class="script">“Closer School by itself is perfect for companies that want to sharpen their sales teams, or individuals who just want the skill set without the placement piece.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-open-companies-hub>Back to Companies</button>
-            <button class="btn btn-primary" data-back-script>Back to Script</button>
-          </div>
-        </section>
-
-        <!-- DROPPING BOMBS -->
-        <section class="card overlay-card company-card" data-company="dropping-bombs">
-          <div class="overlay-tag">Company Deep Dive</div>
-          <div class="company-name">Dropping Bombs</div>
-          <div class="card-body">
-            <p class="script">“Dropping Bombs is Brad’s global entrepreneurship podcast — hundreds of episodes, top guests, and a loyal audience that keeps growing.”</p>
-
-            <p class="script">“There are opportunities around sponsorships, placements, and brand partnerships — it’s media plus relationships.”</p>
-
-            <p class="script">“It’s a great lane if you enjoy outreach, storytelling, and connecting people with the right audience.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-open-companies-hub>Back to Companies</button>
-            <button class="btn btn-primary" data-back-script>Back to Script</button>
-          </div>
-        </section>
-
-        <!-- REAL TRAINING (COMPANY VIEW) -->
-        <section class="card overlay-card company-card" data-company="real-training">
-          <div class="overlay-tag">Company Deep Dive</div>
-          <div class="company-name">Real Training</div>
-          <div class="card-body">
-            <p class="script">“Real Training is the core engine behind all of this — the mindset, skill set, and habit training based on how Brad actually built his career.”</p>
-
-            <p class="script">“Everyone goes through Real Training first. Once you’re showing that you can execute, you get plugged into the company lane where you can win the biggest.”</p>
-
-            <p class="script">“So no matter which company you end up in, this is the operating system underneath it.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-open-companies-hub>Back to Companies</button>
-            <button class="btn btn-primary" data-back-script>Back to Script</button>
-          </div>
-        </section>
-
-        <!-- ===================== OBJECTIONS HUB & DETAIL CARDS ===================== -->
-
-        <!-- OBJECTIONS HUB -->
-        <section class="card overlay-card" id="objections-hub">
-          <div class="badge-row">
-            <span class="badge">Objections Toolkit</span>
-          </div>
-          <div class="card-title">Common Objections</div>
-          <div class="card-body">
-            <p class="script">Tap one of these whenever it comes up. You can bounce back to the main script at any time.</p>
-
-            <div class="company-grid">
-              <div class="company-tile" data-objection-open="money">
-                <div class="company-tile-title">Money Is Tight</div>
-                <div class="company-tile-body">They’re worried about the $5K.</div>
-              </div>
-              <div class="company-tile" data-objection-open="think">
-                <div class="company-tile-title">Need to Think</div>
-                <div class="company-tile-body">They want time to “think about it”.</div>
-              </div>
-              <div class="company-tile" data-objection-open="spouse">
-                <div class="company-tile-title">Spouse</div>
-                <div class="company-tile-body">They need to talk to a partner.</div>
-              </div>
-              <div class="company-tile" data-objection-open="doesnt-work">
-                <div class="company-tile-title">What If It Fails?</div>
-                <div class="company-tile-body">They’re afraid it won’t work.</div>
-              </div>
-            </div>
-
-            <div class="stacked-buttons">
-              <button class="btn-ghost" data-back-script>Back to Script</button>
-            </div>
-          </div>
-        </section>
-
-        <!-- OBJECTION – MONEY TIGHT -->
-        <section class="card overlay-card objection-card" data-objection="money">
-          <div class="overlay-tag">Objection Script</div>
-          <div class="company-name">Money Is Tight</div>
-          <div class="card-body">
-            <p class="script">“I totally get that — most people don’t have $5,000 just sitting around waiting for something like this.”</p>
-
-            <p class="script">“The way I look at it is this: you’re not spending $5K to hope something works. You’re putting a commitment deposit down on yourself, and once you help generate $50K in revenue, it comes back.”</p>
-
-            <p class="script">“So the real question is — do you believe you’ll follow through to the point where you create at least $50,000 in production?”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-open-objections-hub>Back to Objections</button>
-            <button class="btn btn-primary" data-back-script>Back to Script</button>
-          </div>
-        </section>
-
-        <!-- OBJECTION – THINK ABOUT IT -->
-        <section class="card overlay-card objection-card" data-objection="think">
-          <div class="overlay-tag">Objection Script</div>
-          <div class="company-name">Need to Think About It</div>
-          <div class="card-body">
-            <p class="script">“Thinking is good — I’d never ask you to make a decision you don’t feel good about.”</p>
-
-            <p class="script">“Usually when someone says they need to think about it, it’s because there’s one or two specific things that aren’t clear yet.”</p>
-
-            <p class="script">“What exactly do you feel you still need to think through, or what information would make this a no-brainer for you?”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-open-objections-hub>Back to Objections</button>
-            <button class="btn btn-primary" data-back-script>Back to Script</button>
-          </div>
-        </section>
-
-        <!-- OBJECTION – SPOUSE -->
-        <section class="card overlay-card objection-card" data-objection="spouse">
-          <div class="overlay-tag">Objection Script</div>
-          <div class="company-name">Need to Talk to Spouse</div>
-          <div class="card-body">
-            <p class="script">“I agree — they should definitely be in the loop.”</p>
-
-            <p class="script">“When you talk to them, what’s your plan for how you’ll explain why you want to do this, and what it could do for your income and your future?”</p>
-
-            <p class="script">“Money aside, is this something you personally want to move forward with?”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-open-objections-hub>Back to Objections</button>
-            <button class="btn btn-primary" data-back-script>Back to Script</button>
-          </div>
-        </section>
-
-        <!-- OBJECTION – WHAT IF IT DOESN’T WORK -->
-        <section class="card overlay-card objection-card" data-objection="doesnt-work">
-          <div class="overlay-tag">Objection Script</div>
-          <div class="company-name">What If It Doesn’t Work?</div>
-          <div class="card-body">
-            <p class="script">“That’s a smart question — you should be asking it.”</p>
-
-            <p class="script">“The only way this doesn’t work is if you don’t show up or you quit. If you keep moving, keep asking for help, and complete the steps, we don’t stop working with you.”</p>
-
-            <p class="script">“Once you complete the training, get placed, and help generate at least $50K in revenue, your commitment deposit comes back to you. That’s the agreement.”</p>
-          </div>
-          <div class="buttons-row">
-            <button class="btn btn-secondary" data-open-objections-hub>Back to Objections</button>
-            <button class="btn btn-primary" data-back-script>Back to Script</button>
-          </div>
-        </section>
-      </div>
+      </section>
     </main>
   </div>
 
   <script>
-    const cards = Array.from(document.querySelectorAll('.card'));
-    const totalMainSteps = 25;
+    // ---------- CARD DATA ----------
 
-    const phaseLabelEl = document.getElementById('phase-label');
-    const stepCounterEl = document.getElementById('step-counter');
-    const progressBarEl = document.getElementById('progress-bar');
+    const mainDeckOrder = [
+      "card1",
+      "card2",
+      "card3",
+      "card4",
+      "card5",
+      "card6",
+      "card7",
+      "card8",
+      "card9",
+      "card10",
+      "card11"
+    ];
 
-    let currentCard = cards.find(c => c.classList.contains('active')) || cards[0];
-    let lastMainStep = parseInt(currentCard.dataset.step || '1', 10);
+    const cards = {
+      // MAIN FLOW CARDS
+      card1: {
+        id: "card1",
+        type: "main",
+        tag: "Opening",
+        title: "Greeting & Setup",
+        body: `
+          <p>“Hey {first_name}, good to meet you. Thanks for hopping on.”</p>
+          <p>“My name is Robert, and I work directly with Brad Lea’s team.”</p>
+          <p>“Quick heads up — this call may be recorded for training and quality purposes. Is that okay with you?”</p>
+          <p>“I’m here to screen applicants for a position in one of Brad’s companies.”</p>
+          <p>“My goal is to find out where you’re at, what you want, and whether these opportunities are a good fit for you.”</p>
+          <p>“Does that work for you?”</p>
+          <p>“This will take about 15 to 20 minutes. I’ll ask you a few questions, walk you through the opportunity, and we’ll see if it makes sense. Sound good?”</p>
+        `,
+        back: null,
+        next: "card2"
+      },
 
-    function isOverlay(card) {
-      return card.classList.contains('overlay-card');
+      card2: {
+        id: "card2",
+        type: "main",
+        tag: "Opening",
+        title: "Setting the Frame",
+        body: `
+          <p>“Before we dive in, I want to set a quick frame.”</p>
+          <p>“Brad is big on culture. He only wants to work with people who are serious about leveling up — not just curious.”</p>
+          <p>“My job is simple: if it’s a fit, I’ll show you exactly how to plug in. If it’s not, we’ll part as friends.”</p>
+          <p>“Sound good?”</p>
+        `,
+        back: "card1",
+        next: "card3"
+      },
+
+      card3: {
+        id: "card3",
+        type: "main",
+        tag: "Discovery",
+        title: "Discovery Snapshot",
+        body: `
+          <p>“Alright, let me get a quick snapshot of where you're at.”</p>
+          <p>“Where are you calling in from?”</p>
+          <p>“Are you familiar with Brad Lea and his content?”</p>
+          <p><strong>If yes:</strong> “Nice. What have you seen from him so far?”</p>
+          <p><strong>If no:</strong> “Brad Lea is the guy who built the training systems used by top entrepreneurs, major brands, and entire sales organizations around the world.”</p>
+          <p>“What do you do for work right now?”</p>
+          <p>“How long have you been doing that?”</p>
+          <p>“What kind of sales experience do you have?”</p>
+          <p>“Have you worked a commission-only role before?”</p>
+          <p>“What was your best year — how much did you make?”</p>
+          <p class="internal-note">This is where YOU determine if they qualify for a second interview.</p>
+          <p>“What are you going to do with the money when you start making more? What’s the mission for you?”</p>
+          <p>“Do you do anything right now for personal development — reading, training, fitness, gratitude, anything like that?”</p>
+          <p class="internal-note">Note their energy — this sets up the next card.</p>
+        `,
+        back: "card2",
+        next: "card4"
+      },
+
+      card4: {
+        id: "card4",
+        type: "main",
+        tag: "Qualification",
+        title: "Assessment & Standards",
+        body: `
+          <p>“Alright, based on everything you’ve shared, here’s what I’m seeing…”</p>
+          <p class="internal-note">This is where YOU speak — mirror back 2–3 strengths and lightly mention one growth area.</p>
+          <p>“Here’s the deal — Brad is looking for killer closers making $250K and up, so you don’t immediately qualify to move into a position right this second.”</p>
+          <p>“However… we <em>do</em> have an option for you — as long as you’re grateful, accountable, coachable, and driven to be successful.”</p>
+          <p>“Let me ask you something important…”</p>
+          <p><strong>“Are you willing to go through a training without being paid?”</strong></p>
+          <p>“Top closers aren’t paid <em>for</em> training — they’re paid <em>because of</em> training.”</p>
+          <p>“Let me show you what Brad built, and how the system he designed actually works, since our main goal is to help more people become the closers he’s looking for.”</p>
+        `,
+        back: "card3",
+        next: "card5"
+      },
+
+      card5: {
+        id: "card5",
+        type: "main",
+        tag: "Foundation",
+        title: "Brad & LightSpeed VT",
+        body: `
+          <p>“Training high-level closers — that’s the mission here.”</p>
+          <p>“Brad built <strong>LightSpeed VT</strong>, the training system used by Tony Robbins, Grant Cardone, General Motors, the UFC, Top Chef, Zig Ziglar, and dozens of franchise and sales organizations.”</p>
+          <p>“He didn’t just teach sales — he built the platforms these major brands run their training on.”</p>
+          <p>“On top of that, Brad owns multiple companies across software, financial services, events, coaching, and sales training. Those are the vehicles we plug people into once they’re trained and producing.”</p>
+          <p>“Real Training is the engine he built so people can learn the exact mindset, skill set, and habits that helped him become ultra-successful — and apply it in their own life or career.”</p>
+          <p>“And honestly, some people never take a sales position at all… because once they apply these tactics to their own business, their income skyrockets on its own.”</p>
+          <p class="internal-note">Tap <strong>Companies</strong> any time if they want more detail on Brad’s ecosystem.</p>
+        `,
+        back: "card4",
+        next: "card6"
+      },
+
+      card6: {
+        id: "card6",
+        type: "main",
+        tag: "Foundation",
+        title: "The Three Pillars",
+        body: `
+          <p>“Real Training consists of three pillars — <strong>mindset, skill set, and habits</strong>.”</p>
+          <p><strong>“Mindset”</strong> is how Brad thinks about deals, money, problems, people, and opportunity.</p>
+          <p><strong>“Skill set”</strong> is the structure — the questions, the framing, the process, the presentation, the objection handling, the closing.</p>
+          <p><strong>“Habits”</strong> are the daily routines and standards that keep you consistent instead of emotional.</p>
+          <p>“These three pillars are what turn good reps into killers — and killers into top producers.”</p>
+        `,
+        back: "card5",
+        next: "card7"
+      },
+
+      card7: {
+        id: "card7",
+        type: "main",
+        tag: "Placement",
+        title: "Placement & Ecosystem",
+        body: `
+          <p>“Once you’re trained and producing, there are multiple companies in Brad’s ecosystem where performers can be placed — depending on fit and timing.”</p>
+          <p>“When you join Real Training and complete the program, you’re guaranteed placement into one of Brad’s core companies.”</p>
+          <p>“And starting next year, there will also be partner companies that plug into the same system — meaning even more opportunities for trained closers.”</p>
+          <p>“Most programs teach you how to sell, charge you thousands, and then leave you stranded with no job.”</p>
+          <p>“Brad built this differently — you get trained, you get sharpened, and then you get plugged into a real vehicle where you can actually produce.”</p>
+          <p class="internal-note">Tap <strong>Companies</strong> any time if they want details on LightSpeed VT, Real Financial, Real Merchant, Real Coach, Real Success Events, Dropping Bombs, Closer School, or Real Training itself.</p>
+        `,
+        back: "card6",
+        next: "card8"
+      },
+
+      card8: {
+        id: "card8",
+        type: "main",
+        tag: "Commitment",
+        title: "The Commitment Deposit",
+        body: `
+          <p>“Now let’s talk about the commitment.”</p>
+          <p>“This isn’t a fee — it’s a <strong>commitment deposit</strong>.”</p>
+          <p>“To join Real Training, it’s a $5,000 commitment deposit.”</p>
+          <p>“You complete Real Training, you onboard into one of the companies, and when you help that company generate $50,000 in revenue…”</p>
+          <p>“…your full $5,000 is refunded back to you.”</p>
+          <p>“You’re not betting on Brad — you’re betting on yourself.”</p>
+        `,
+        back: "card7",
+        next: "card9"
+      },
+
+      card9: {
+        id: "card9",
+        type: "main",
+        tag: "Commitment",
+        title: "Why There’s a Deposit",
+        body: `
+          <p>“Brad used to give the training away for free.”</p>
+          <p>“What he found was: people didn’t show up, they didn’t finish, and they quit on themselves.”</p>
+          <p>“Meanwhile, he was paying coaches and constantly building the system.”</p>
+          <p>“So he changed the model.”</p>
+          <p>“Now there’s a little skin in the game — and the $5,000 comes back when you do your part.”</p>
+          <p>“If you don’t give up, we won’t give up on you.”</p>
+        `,
+        back: "card8",
+        next: "card10"
+      },
+
+      card10: {
+        id: "card10",
+        type: "main",
+        tag: "Close",
+        title: "Primary Close",
+        body: `
+          <p>“Based on everything we’ve covered — your background, what you want to earn, how the training works, and how placement works…”</p>
+          <p>“…does it make sense for you to get started with Real Training and bet on yourself today?”</p>
+          <p>“Money aside — do you believe the training and the sales opportunity is something you want for yourself?”</p>
+          <p class="internal-note">
+            If they say <strong>yes</strong>, move forward to payment instructions.<br />
+            If they hesitate, open <strong>Objections</strong> and work through what’s unclear.
+          </p>
+        `,
+        back: "card9",
+        next: "card11"
+      },
+
+      card11: {
+        id: "card11",
+        type: "main",
+        tag: "Payment",
+        title: "Payment Structure",
+        body: `
+          <p>“If we move forward, I’ll send you a secure payment link with a few options.”</p>
+          <p>“You’ll choose whether you want to structure the $5,000 as paid in full, split, or financed.”</p>
+          <p>“There’s also a $1,500 option that doesn’t include the refund — that’s for people who see the value in the training and are willing to spend the money either way.”</p>
+          <p>“Those payments can be well under $100 a month, and a lot of people keep their current role while they ramp this up part-time.”</p>
+          <p class="internal-note">
+            IF THEY’RE READY: continue into the close and walk them through payment.<br />
+            IF THEY HESITATE: go back into objections and create clarity — don’t let them drift.
+          </p>
+        `,
+        back: "card10",
+        next: null
+      },
+
+      // ---------- COMPANIES HUB & COMPANY CARDS ----------
+
+      companies_menu: {
+        id: "companies_menu",
+        type: "companiesMenu",
+        tag: "Companies",
+        title: "Brad’s Companies & Vehicles",
+        body: `
+          <p>Tap a company below whenever a prospect asks, “What would I actually be doing?” or “What are the opportunities?”</p>
+          <div class="pill-grid">
+            <button class="pill-button" data-card="co_lightspeed"><span class="icon">💡</span>LightSpeed VT</button>
+            <button class="pill-button" data-card="co_realfinancial"><span class="icon">💼</span>Real Financial</button>
+            <button class="pill-button" data-card="co_realmerchant"><span class="icon">💳</span>Real Merchant</button>
+            <button class="pill-button" data-card="co_realcoach"><span class="icon">🎯</span>Real Coach</button>
+            <button class="pill-button" data-card="co_realevents"><span class="icon">🎟️</span>Real Success Events</button>
+            <button class="pill-button" data-card="co_droppingbombs"><span class="icon">🎙️</span>Dropping Bombs</button>
+            <button class="pill-button" data-card="co_closerschool"><span class="icon">📚</span>Closer School</button>
+            <button class="pill-button" data-card="co_realtraining"><span class="icon">🔥</span>Real Training</button>
+          </div>
+          <p class="internal-note">Use this hub when they want specifics. Always bring it back to the main script once they’re clear.</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      co_lightspeed: {
+        id: "co_lightspeed",
+        type: "company",
+        tag: "LightSpeed VT",
+        title: "LightSpeed VT",
+        body: `
+          <p>“LightSpeed VT is Brad’s flagship software company — it builds interactive training systems for major brands, franchises, and top entrepreneurs.”</p>
+          <p>“It’s the platform behind training for people like Tony Robbins, Grant Cardone, and companies like General Motors, the UFC, Top Chef, real estate schools, and franchise chains.”</p>
+          <p>“As a closer, you’re talking to decision-makers — owners, executives, leaders — about building or upgrading their training platform.”</p>
+          <p>“Deals are high-ticket. You’re typically selling packages that can range from tens of thousands of dollars and up, and the commission structure is a flat percentage per deal, so one good month can be a six-figure run-rate.”</p>
+          <p>“If you like strategic conversations with serious businesses and you want big pops per deal, LightSpeed VT is a great fit.”</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      co_realfinancial: {
+        id: "co_realfinancial",
+        type: "company",
+        tag: "Real Financial",
+        title: "Real Financial",
+        body: `
+          <p>“Real Financial is Brad’s financial services organization — focused on life insurance, annuities, and related financial products.”</p>
+          <p>“The commissions in this space are strong, and there’s long-term upside if you like helping people with protection, retirement, and wealth strategies.”</p>
+          <p>“The powerful part here is that you get help closing your first several deals and you’re building a book of business that can pay you for years.”</p>
+          <p>“If you like the idea of bigger commission checks and you’re comfortable having real money conversations, Real Financial is a strong lane.”</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      co_realmerchant: {
+        id: "co_realmerchant",
+        type: "company",
+        tag: "Real Merchant",
+        title: "Real Merchant",
+        body: `
+          <p>“Real Merchant helps businesses save money on their credit card processing while giving you upfront commissions plus residual income.”</p>
+          <p>“You’re talking to business owners about lowering a bill they already hate paying — so the value proposition is simple: better terms, better support, more money back in their pocket.”</p>
+          <p>“You can earn solid upfront commissions and, over time, build residual income from the processing volume. As your portfolio grows, that book of business can become an asset in itself.”</p>
+          <p>“If you want recurring income and like working with local or online businesses, Real Merchant is a strong long-term play.”</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      co_realcoach: {
+        id: "co_realcoach",
+        type: "company",
+        tag: "Real Coach",
+        title: "Real Coach",
+        body: `
+          <p>“Real Coach is for people who want to build, package, and sell their own coaching program.”</p>
+          <p>“The system helps clients clarify their offer, pricing, and delivery — and gives them a framework to build a real coaching business instead of just a side hustle.”</p>
+          <p>“You’re talking to experts, coaches, and service providers who know a lot, but haven’t turned that knowledge into a scalable business yet.”</p>
+          <p>“If you enjoy working with coaches and creators and you like helping people productize what they know, Real Coach is a great lane.”</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      co_realevents: {
+        id: "co_realevents",
+        type: "company",
+        tag: "Real Success Events",
+        title: "Real Success Events",
+        body: `
+          <p>“Real Success Events is Brad’s live events business — both at his headquarters in Vegas and with partners.”</p>
+          <p>“You’re selling tickets, event packages, and sometimes backend offers tied to those events.”</p>
+          <p>“If you like high energy environments, live experiences, and talking to people who are actively investing in their growth, this path can be a lot of fun.”</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      co_droppingbombs: {
+        id: "co_droppingbombs",
+        type: "company",
+        tag: "Dropping Bombs",
+        title: "Dropping Bombs Podcast",
+        body: `
+          <p>“Dropping Bombs is Brad’s entrepreneurship podcast — hundreds of episodes, a global audience, and constant exposure to high-level guests.”</p>
+          <p>“On the business side, there are opportunities around sponsorships, brand placements, and strategic partnerships.”</p>
+          <p>“If you like media, relationships, and connecting brands with audiences, this is a creative lane.”</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      co_closerschool: {
+        id: "co_closerschool",
+        type: "company",
+        tag: "Closer School",
+        title: "Closer School",
+        body: `
+          <p>“Closer School is Brad’s sales training brand — programs, content, and certifications for closers at all levels.”</p>
+          <p>“A lot of what’s inside Real Training comes from years of refining what works in Closer School.”</p>
+          <p>“Some companies buy Closer School just to certify and level up their own sales teams.”</p>
+          <p>“If you love the craft of selling and want to help others become better closers, this is where that content lives.”</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      co_realtraining: {
+        id: "co_realtraining",
+        type: "company",
+        tag: "Real Training",
+        title: "Real Training (Core Engine)",
+        body: `
+          <p>“Real Training is the core training and placement engine that feeds all of Brad’s companies.”</p>
+          <p>“It focuses on mindset, skill set, and habits — the exact things Brad used to build his career and his companies.”</p>
+          <p>“Everyone goes through Real Training first, then gets plugged into the vehicle where they can win the biggest.”</p>
+          <p>“This is the foundation — the sharper you get here, the better you’ll do anywhere you plug in.”</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      // ---------- OBJECTIONS HUB & OBJECTION CARDS ----------
+
+      objections_menu: {
+        id: "objections_menu",
+        type: "objectionsMenu",
+        tag: "Objections",
+        title: "Objections Hub",
+        body: `
+          <p>Tap the objection they raise so you can stay calm, clear, and in control of the frame.</p>
+          <div class="pill-grid">
+            <button class="pill-button" data-card="obj_money"><span class="icon">💵</span>Money is tight</button>
+            <button class="pill-button" data-card="obj_think"><span class="icon">🤔</span>I need to think about it</button>
+            <button class="pill-button" data-card="obj_spouse"><span class="icon">💍</span>I need to talk to my spouse</button>
+            <button class="pill-button" data-card="obj_work"><span class="icon">⚖️</span>What if it doesn’t work?</button>
+            <button class="pill-button" data-card="obj_options"><span class="icon">📑</span>Explain the options again</button>
+          </div>
+          <p class="internal-note">Use this when they get stuck — handle the real concern, then circle back to the close.</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      obj_money: {
+        id: "obj_money",
+        type: "objection",
+        tag: "Objection",
+        title: "“Money is Tight”",
+        body: `
+          <p>“Totally fair — I get that.”</p>
+          <p>“The way I look at it is this: if you plan on producing $50,000 in revenue anyway, the money is coming back to you.”</p>
+          <p>“So the real question isn’t ‘Can you afford $5,000 forever?’ — the question is, do you believe you’ll execute and follow through to the point where you earn that $50,000?”</p>
+          <p>“If you believe you’re going to do the work and stick with it, this isn’t an expense — it’s a temporary commitment that gets refunded when you do your part.”</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      obj_think: {
+        id: "obj_think",
+        type: "objection",
+        tag: "Objection",
+        title: "“I Need to Think About It”",
+        body: `
+          <p>“I respect that — thinking is good.”</p>
+          <p>“Usually when someone says they need to think about it, it means there’s one or two things that aren’t totally clear yet.”</p>
+          <p>“What specifically are you unsure about?”</p>
+          <p>“If we can clear that up right now, would there be anything else holding you back?”</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      obj_spouse: {
+        id: "obj_spouse",
+        type: "objection",
+        tag: "Objection",
+        title: "“I Need to Talk to My Spouse”",
+        body: `
+          <p>“Totally understand — they should be in the loop.”</p>
+          <p>“When you talk to them, what are you going to tell them about why you want to do this and what it could do for your income and your future?”</p>
+          <p>“Money aside, is this something you personally want to move forward with?”</p>
+          <p>“If you and I can get you to a clear yes, it’s much easier to bring them a confident conversation instead of a maybe.”</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      obj_work: {
+        id: "obj_work",
+        type: "objection",
+        tag: "Objection",
+        title: "“What If It Doesn’t Work?”",
+        body: `
+          <p>“Great question.”</p>
+          <p>“The way this doesn’t work is if you don’t show up or you quit.”</p>
+          <p>“If you don’t give up, we won’t give up on you. You complete the training, you get placed, and when you help generate $50,000 in revenue, your commitment deposit comes back to you.”</p>
+          <p>“So the real risk isn’t the program — it’s whether you’re willing to commit and follow through.”</p>
+        `,
+        back: null,
+        next: null
+      },
+
+      obj_options: {
+        id: "obj_options",
+        type: "objection",
+        tag: "Objection",
+        title: "“Explain the Options Again”",
+        body: `
+          <p>“Of course — let me break it down one more time.”</p>
+          <p>“The main path is a $5,000 commitment deposit. You go through Real Training, you onboard into one of Brad’s companies, and once you’ve helped generate at least $50,000 in revenue, that $5,000 is refunded back to you.”</p>
+          <p>“There’s also a $1,500 option that does <strong>not</strong> include the refund. It’s for people who see the value in the training and are willing to spend the money either way. The payments can be well under $100 a month, and a lot of people keep their current role while they ramp this up part-time.”</p>
+          <p>“Either way, you get the full training and the opportunity — it just comes down to how you want to structure the commitment.”</p>
+        `,
+        back: null,
+        next: null
+      }
+    };
+
+    // ---------- APP STATE & RENDERING ----------
+
+    let currentCardId = "card1";
+    let lastMainCardId = "card1";
+
+    const tagEl = document.getElementById("cardTagText");
+    const titleEl = document.getElementById("cardTitle");
+    const bodyEl = document.getElementById("cardBody");
+    const counterEl = document.getElementById("cardCounter");
+    const progressBarEl = document.getElementById("progressBar");
+    const backBtn = document.getElementById("backBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const overlayLabelEl = document.getElementById("overlayLabel");
+
+    function isMainCard(cardId) {
+      const c = cards[cardId];
+      return c && c.type === "main";
     }
 
-    function showCard(card) {
-      cards.forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-      currentCard = card;
+    function showMainCard(cardId) {
+      currentCardId = cardId;
+      lastMainCardId = cardId;
+      renderCard(cards[cardId]);
+    }
 
-      const step = parseInt(card.dataset.step || 'NaN', 10);
+    function showCard(cardId) {
+      currentCardId = cardId;
+      renderCard(cards[cardId]);
+    }
 
-      if (!Number.isNaN(step)) {
-        lastMainStep = step;
-        const phase = card.dataset.phase || 'Flow';
-        phaseLabelEl.textContent = phase;
-        stepCounterEl.textContent = `Card ${step} of ${totalMainSteps}`;
-        const pct = (step - 1) / (totalMainSteps - 1) * 100;
-        progressBarEl.style.width = `${pct}%`;
+    function renderCard(card) {
+      if (!card) return;
+
+      // Tag & title
+      tagEl.textContent = card.tag || "";
+      titleEl.textContent = card.title || "";
+
+      // Body
+      bodyEl.innerHTML = card.body || "";
+
+      // Progress + counter
+      if (card.type === "main") {
+        const idx = mainDeckOrder.indexOf(card.id);
+        const total = mainDeckOrder.length;
+        if (idx !== -1) {
+          counterEl.style.display = "block";
+          counterEl.textContent = `Card ${idx + 1} of ${total}`;
+          const pct = ((idx + 1) / total) * 100;
+          progressBarEl.style.width = `${pct}%`;
+        } else {
+          counterEl.style.display = "none";
+          progressBarEl.style.width = "0%";
+        }
+        overlayLabelEl.style.display = "none";
       } else {
-        // Overlay view
-        phaseLabelEl.textContent = 'Overlay';
-        stepCounterEl.textContent = 'Overlay View';
+        // Overlay views (companies / objections / detail cards)
+        counterEl.style.display = "none";
+        progressBarEl.style.width = "0%";
+        overlayLabelEl.style.display = "block";
+      }
+
+      // Nav setup
+      if (card.type === "main") {
+        setupMainNav(card);
+      } else if (card.type === "company") {
+        setupCompanyNav(card);
+      } else if (card.type === "companiesMenu") {
+        setupCompaniesMenuNav(card);
+      } else if (card.type === "objection") {
+        setupObjectionNav(card);
+      } else if (card.type === "objectionsMenu") {
+        setupObjectionsMenuNav(card);
+      }
+
+      // Attach button handlers for menu pills
+      if (card.type === "companiesMenu" || card.type === "objectionsMenu") {
+        const buttons = bodyEl.querySelectorAll(".pill-button[data-card]");
+        buttons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const target = btn.getAttribute("data-card");
+            if (!target) return;
+            showCard(target);
+          });
+        });
       }
     }
 
-    function showStep(step) {
-      const target = cards.find(c => parseInt(c.dataset.step || 'NaN', 10) === step);
-      if (target) showCard(target);
+    function setupMainNav(card) {
+      backBtn.style.display = "inline-flex";
+      nextBtn.style.display = "inline-flex";
+
+      backBtn.textContent = "";
+      backBtn.innerHTML = `<span class="icon">←</span><span>Back</span>`;
+      nextBtn.textContent = "";
+      nextBtn.innerHTML = `<span>Next</span><span class="icon">→</span>`;
+
+      backBtn.disabled = !card.back;
+      nextBtn.disabled = !card.next;
+
+      backBtn.onclick = () => {
+        if (!card.back) return;
+        showMainCard(card.back);
+      };
+
+      nextBtn.onclick = () => {
+        if (!card.next) return;
+        showMainCard(card.next);
+      };
     }
 
-    function backToScript() {
-      showStep(lastMainStep);
+    function setupCompanyNav(card) {
+      backBtn.style.display = "inline-flex";
+      nextBtn.style.display = "inline-flex";
+
+      backBtn.textContent = "";
+      backBtn.innerHTML = `<span class="icon">←</span><span>Back to Companies</span>`;
+      nextBtn.textContent = "";
+      nextBtn.innerHTML = `<span>Back to Script</span><span class="icon">↩︎</span>`;
+
+      backBtn.disabled = false;
+      nextBtn.disabled = false;
+
+      backBtn.onclick = () => {
+        showCard("companies_menu");
+      };
+
+      nextBtn.onclick = () => {
+        if (lastMainCardId) {
+          showMainCard(lastMainCardId);
+        } else {
+          showMainCard("card1");
+        }
+      };
     }
 
-    // Global click handler
-    document.addEventListener('click', (event) => {
-      const nextBtn = event.target.closest('[data-next]');
-      if (nextBtn) {
-        const target = parseInt(nextBtn.dataset.next, 10);
-        if (!Number.isNaN(target)) showStep(target);
-        return;
-      }
+    function setupCompaniesMenuNav(card) {
+      backBtn.style.display = "inline-flex";
+      nextBtn.style.display = "none";
 
-      const prevBtn = event.target.closest('[data-prev]');
-      if (prevBtn) {
-        const target = parseInt(prevBtn.dataset.prev, 10);
-        if (!Number.isNaN(target)) showStep(target);
-        return;
-      }
+      backBtn.textContent = "";
+      backBtn.innerHTML = `<span class="icon">↩︎</span><span>Back to Script</span>`;
+      backBtn.disabled = false;
 
-      const restartBtn = event.target.closest('[data-restart]');
-      if (restartBtn) {
-        showStep(1);
-        return;
-      }
+      backBtn.onclick = () => {
+        if (lastMainCardId) {
+          showMainCard(lastMainCardId);
+        } else {
+          showMainCard("card1");
+        }
+      };
+    }
 
-      const backScriptBtn = event.target.closest('[data-back-script]');
-      if (backScriptBtn) {
-        backToScript();
-        return;
-      }
+    function setupObjectionNav(card) {
+      backBtn.style.display = "inline-flex";
+      nextBtn.style.display = "inline-flex";
 
-      const openCompaniesHubBtn = event.target.closest('[data-open-companies-hub]');
-      if (openCompaniesHubBtn) {
-        const hub = document.getElementById('companies-hub');
-        if (hub) showCard(hub);
-        return;
-      }
+      backBtn.textContent = "";
+      backBtn.innerHTML = `<span class="icon">←</span><span>Back to Objections</span>`;
+      nextBtn.textContent = "";
+      nextBtn.innerHTML = `<span>Back to Script</span><span class="icon">↩︎</span>`;
 
-      const openObjectionsHubBtn = event.target.closest('[data-open-objections-hub]');
-      if (openObjectionsHubBtn) {
-        const hub = document.getElementById('objections-hub');
-        if (hub) showCard(hub);
-        return;
-      }
+      backBtn.disabled = false;
+      nextBtn.disabled = false;
 
-      const companyTile = event.target.closest('[data-company-open]');
-      if (companyTile) {
-        const key = companyTile.dataset.companyOpen;
-        const card = cards.find(c => c.dataset.company === key);
-        if (card) showCard(card);
-        return;
-      }
+      backBtn.onclick = () => {
+        showCard("objections_menu");
+      };
 
-      const objectionTile = event.target.closest('[data-objection-open]');
-      if (objectionTile) {
-        const key = objectionTile.dataset.objectionOpen;
-        const card = cards.find(c => c.dataset.objection === key);
-        if (card) showCard(card);
-        return;
+      nextBtn.onclick = () => {
+        if (lastMainCardId) {
+          showMainCard(lastMainCardId);
+        } else {
+          showMainCard("card1");
+        }
+      };
+    }
+
+    function setupObjectionsMenuNav(card) {
+      backBtn.style.display = "inline-flex";
+      nextBtn.style.display = "none";
+
+      backBtn.textContent = "";
+      backBtn.innerHTML = `<span class="icon">↩︎</span><span>Back to Script</span>`;
+      backBtn.disabled = false;
+
+      backBtn.onclick = () => {
+        if (lastMainCardId) {
+          showMainCard(lastMainCardId);
+        } else {
+          showMainCard("card1");
+        }
+      };
+    }
+
+    // ---------- TOP-LEVEL BUTTONS ----------
+
+    document.getElementById("companiesBtn").addEventListener("click", () => {
+      if (isMainCard(currentCardId)) {
+        lastMainCardId = currentCardId;
       }
+      showCard("companies_menu");
     });
 
-    // Top bar buttons
-    const companiesBtn = document.getElementById('btn-companies');
-    const objectionsBtn = document.getElementById('btn-objections');
+    document.getElementById("objectionsBtn").addEventListener("click", () => {
+      if (isMainCard(currentCardId)) {
+        lastMainCardId = currentCardId;
+      }
+      showCard("objections_menu");
+    });
 
-    if (companiesBtn) {
-      companiesBtn.addEventListener('click', () => {
-        const hub = document.getElementById('companies-hub');
-        if (hub) showCard(hub);
-      });
-    }
+    // ---------- INITIAL RENDER ----------
 
-    if (objectionsBtn) {
-      objectionsBtn.addEventListener('click', () => {
-        const hub = document.getElementById('objections-hub');
-        if (hub) showCard(hub);
-      });
-    }
+    renderCard(cards[currentCardId]);
   </script>
 </body>
 </html>
