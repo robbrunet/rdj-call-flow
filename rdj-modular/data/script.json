@@ -1,0 +1,149 @@
+{
+  "lines": [
+    {
+      "id": "open-1",
+      "section": "Open",
+      "text": "Hey, is this {{name}}?"
+    },
+    {
+      "id": "open-2",
+      "section": "Open",
+      "text": "Awesome — this is Robert with Brad Lea’s team. How’s your day going?"
+    },
+    {
+      "id": "open-3",
+      "section": "Open",
+      "text": "Perfect. Just to let you know, this call is being recorded for training and compliance purposes. Is that ok?",
+      "compliance": true
+    },
+    {
+      "id": "frame-1",
+      "section": "Frame",
+      "text": "I’ll keep this super simple. This call goes one of three ways, and I’ll tell you upfront so there's no surprises."
+    },
+    {
+      "id": "frame-2",
+      "section": "Frame",
+      "text": "One — you’re a fit, and we move you to an interview with our placement team."
+    },
+    {
+      "id": "frame-3",
+      "section": "Frame",
+      "text": "Two — not a fit for a sales role right now, and that’s totally fine."
+    },
+    {
+      "id": "frame-4",
+      "section": "Frame",
+      "text": "Three — you’re not ready *yet*, but with the right training, you could absolutely crush sales."
+    },
+    {
+      "id": "frame-5",
+      "section": "Frame",
+      "text": "Fair enough?"
+    },
+    {
+      "id": "disc-1",
+      "section": "Discovery",
+      "text": "Cool — first question: What’s got you interested in sales opportunities right now?"
+    },
+    {
+      "id": "disc-2",
+      "section": "Discovery",
+      "text": "Got it. What’s your background? What have you been doing up to this point?"
+    },
+    {
+      "id": "disc-3",
+      "section": "Discovery",
+      "text": "And what are you earning right now, roughly?"
+    },
+    {
+      "id": "disc-4",
+      "section": "Discovery",
+      "text": "Ideally, what would you *like* to be earning?"
+    },
+    {
+      "id": "disc-5",
+      "section": "Discovery",
+      "text": "What hours are you available to work?"
+    },
+    {
+      "id": "disc-6",
+      "section": "Discovery",
+      "text": "What kind of environment do you thrive in — structure or freedom?"
+    },
+
+    {
+      "id": "needs-1",
+      "section": "Assess – Needs Training",
+      "text": "Let me shoot you straight for a second."
+    },
+    {
+      "id": "needs-2",
+      "section": "Assess – Needs Training",
+      "text": "You seem sharp — you listen well, you communicate clearly, and there’s something there."
+    },
+    {
+      "id": "needs-3",
+      "section": "Assess – Needs Training",
+      "text": "But I'm a little hesitant putting you straight into one of the sales positions because leads are pretty expensive these days and Brad will kill me if I put someone in that can't convert them right off the bat.",
+      "compliance": true
+    },
+    {
+      "id": "needs-4",
+      "section": "Assess – Needs Training",
+      "text": "We're going to need you to hit the ball out of the park on day one.",
+      "compliance": true
+    },
+    {
+      "id": "needs-5",
+      "section": "Assess – Needs Training",
+      "text": "The good news is, I think if Brad trained you, you'd absolutely crush it. Are you willing to be trained in order to get the gig?",
+      "compliance": true
+    },
+
+    {
+      "id": "pitch-1",
+      "section": "Training Pitch",
+      "text": "Here’s what Brad built — it’s called Real Training."
+    },
+    {
+      "id": "pitch-2",
+      "section": "Training Pitch",
+      "text": "Mindset to get your head right, Skillset so you can actually close, and Habits so you stay consistent."
+    },
+    {
+      "id": "pitch-3",
+      "section": "Training Pitch",
+      "text": "It’s fast, structured, and built for people who want real results, not YouTube theory."
+    },
+
+    {
+      "id": "deposit-1",
+      "section": "Deposit",
+      "text": "To move forward, there’s a fully-refundable deposit to show you’re serious."
+    },
+    {
+      "id": "deposit-2",
+      "section": "Deposit",
+      "text": "It’s $5,000 — and again — it is **FULLY REFUNDABLE**, assuming you don’t quit.",
+      "compliance": true
+    },
+    {
+      "id": "deposit-3",
+      "section": "Deposit",
+      "text": "If you complete your training and show up for the role, you get it right back.",
+      "compliance": true
+    },
+
+    {
+      "id": "close-1",
+      "section": "Close",
+      "text": "Based on everything we covered, does moving forward to placement make sense to you?"
+    },
+    {
+      "id": "close-2",
+      "section": "Close",
+      "text": "If so, I’ll send you the enrollment link now and walk you through it."
+    }
+  ]
+}
