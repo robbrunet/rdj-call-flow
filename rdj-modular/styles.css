@@ -1,0 +1,208 @@
+/* ==========================
+   RDJ MODULAR STYLE SHEET
+   ========================== */
+
+:root {
+  --bg: #111418;
+  --bg-card: #161a1f;
+  --accent: #3bbdf8;
+  --accent-soft: rgba(56, 189, 248, 0.12);
+
+  --text-main: #e5e7eb;
+  --text-soft: #9ca3af;
+  --text-muted: #6b7280;
+
+  --border-subtle: rgba(148, 163, 184, 0.22);
+
+  --radius: 12px;
+  --radius-lg: 18px;
+
+  --shadow-soft: 0 4px 14px rgba(0,0,0,0.28);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* APP SHELL */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* HEADER */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Brand mark */
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark {
+  background: var(--accent);
+  color: #000;
+  padding: 10px 14px;
+  border-radius: var(--radius-lg);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.brand-title {
+  font-weight: 600;
+}
+
+.brand-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+/* Tabs */
+.view-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.view-tab {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  padding: 6px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--text-main);
+  transition: 0.2s ease;
+}
+
+.view-tab.active,
+.view-tab:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+/* Panels */
+.app-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.left-panel,
+.right-panel {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.left-panel {
+  border-right: 1px solid var(--border-subtle);
+}
+
+.panel-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.panel-helper {
+  color: var(--text-soft);
+  margin-bottom: 18px;
+}
+
+/* Lists */
+.script-list,
+.list-basic {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.script-list li,
+.list-basic li {
+  padding: 14px;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+}
+
+.script-list li:hover,
+.list-basic li:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+/* Coach view */
+.coach-view {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 22px;
+  min-height: 200px;
+}
+
+.coach-line-label {
+  font-size: 1rem;
+  margin-bottom: 14px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.coach-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.coach-tab {
+  padding: 6px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  cursor: pointer;
+}
+
+.coach-tab.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.coach-tab-content {
+  color: var(--text-soft);
+}
+
+.coach-placeholder {
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* FOOTER */
+.app-footer {
+  background: var(--bg-card);
+  padding: 14px 22px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
