@@ -401,50 +401,20 @@
         </div>
       </div>
       <div class="app-actions">
-  <button id="coachModeBtn" class="chip-button">
-    <span class="icon">🎧</span>
-    <span>Coach Mode</span>
-  </button>
-  <button id="companiesBtn" class="chip-button primary-chip">
-    <span class="icon">🏢</span>
-    <span>Companies</span>
-  </button>
-  <button id="objectionsBtn" class="chip-button">
-    <span class="icon">⚠️</span>
-    <span>Objections</span>
-  </button>
-</div>
-      // ---------- COACH MODE TOGGLE ----------
-
-let coachModeOn = true; // internal notes visible by default
-
-function updateCoachModeVisibility() {
-  const notes = document.querySelectorAll(".internal-note");
-  notes.forEach((el) => {
-    el.style.display = coachModeOn ? "block" : "none";
-  });
-}
-
-document.getElementById("coachModeBtn").addEventListener("click", () => {
-  coachModeOn = !coachModeOn;
-  updateCoachModeVisibility();
-});
-// ---------- COACH MODE TOGGLE ----------
-
-let coachModeOn = true; // internal notes visible by default
-
-function updateCoachModeVisibility() {
-  const notes = document.querySelectorAll(".internal-note");
-  notes.forEach((el) => {
-    el.style.display = coachModeOn ? "block" : "none";
-  });
-}
-
-document.getElementById("coachModeBtn").addEventListener("click", () => {
-  coachModeOn = !coachModeOn;
-  updateCoachModeVisibility();
-});
-</header>
+        <button id="coachModeBtn" class="chip-button">
+          <span class="icon">🎧</span>
+          <span>Coach Mode</span>
+        </button>
+        <button id="companiesBtn" class="chip-button primary-chip">
+          <span class="icon">🏢</span>
+          <span>Companies</span>
+        </button>
+        <button id="objectionsBtn" class="chip-button">
+          <span class="icon">⚠️</span>
+          <span>Objections</span>
+        </button>
+      </div>
+    </header>
 
     <div class="divider"></div>
 
@@ -486,6 +456,21 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
   </div>
 
   <script>
+    // ---------- COACH MODE TOGGLE ----------
+    let coachModeOn = true; // internal notes visible by default
+
+    function updateCoachModeVisibility() {
+      const notes = document.querySelectorAll(".internal-note");
+      notes.forEach((el) => {
+        el.style.display = coachModeOn ? "block" : "none";
+      });
+    }
+
+    document.getElementById("coachModeBtn").addEventListener("click", () => {
+      coachModeOn = !coachModeOn;
+      updateCoachModeVisibility();
+    });
+
     // ---------- CARD DATA ----------
 
     const mainDeckOrder = [
@@ -503,7 +488,7 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
     ];
 
     const cards = {
-      // MAIN FLOW CARDS
+      /* -------------- MAIN FLOW CARDS -------------- */
       card1: {
         id: "card1",
         type: "main",
@@ -537,7 +522,7 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
         next: "card3"
       },
 
-          card3: {
+      card3: {
         id: "card3",
         type: "main",
         tag: "Discovery",
@@ -580,8 +565,7 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
         next: "card4"
       },
 
-
-           card4: {
+      card4: {
         id: "card4",
         type: "main",
         tag: "Qualification",
@@ -599,11 +583,7 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
           <p><strong>“Three:</strong> You have potential, but you need to be trained so you can actually convert high-quality leads from day one.”</p>
 
           <p class="internal-note">
-            Use this card to decide which bucket they’re in.<br>
-            • If they’re clearly not a fit, you can use language like:<br>
-            “Based on everything you’ve shared, I don’t think this is the right fit right now. This is a high-responsibility, commission-only role that requires a lot of personal accountability, and from what you’ve said, that doesn’t sound like the right match at the moment. I appreciate your time, and if things change you’re always welcome to re-apply.”<br><br>
-            • If they’re strong enough for a direct role, shift into a ‘doesn’t need training’ conversation (expectations, 1099, standards).<br>
-            • Most of the time, you’ll segue into the Real Training path below.
+            Use this card to decide which bucket they’re in.
           </p>
 
           <p>“However… we do have an option for you — as long as you’re grateful, accountable, coachable, and driven to be successful.”</p>
@@ -667,7 +647,7 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
         next: "card8"
       },
 
-            card8: {
+      card8: {
         id: "card8",
         type: "main",
         tag: "Commitment",
@@ -687,7 +667,7 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
         next: "card9"
       },
 
-            card9: {
+      card9: {
         id: "card9",
         type: "main",
         tag: "Commitment",
@@ -743,7 +723,7 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
         next: null
       },
 
-      // ---------- COMPANIES HUB & COMPANY CARDS ----------
+      /* ---------- COMPANIES HUB & COMPANY CARDS ---------- */
 
       companies_menu: {
         id: "companies_menu",
@@ -887,7 +867,7 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
         next: null
       },
 
-      // ---------- OBJECTIONS HUB & OBJECTION CARDS ----------
+      /* ---------- OBJECTIONS HUB & CARDS ---------- */
 
       objections_menu: {
         id: "objections_menu",
@@ -1018,14 +998,10 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
     function renderCard(card) {
       if (!card) return;
 
-      // Tag & title
       tagEl.textContent = card.tag || "";
       titleEl.textContent = card.title || "";
-
-      // Body
       bodyEl.innerHTML = card.body || "";
 
-      // Progress + counter
       if (card.type === "main") {
         const idx = mainDeckOrder.indexOf(card.id);
         const total = mainDeckOrder.length;
@@ -1040,13 +1016,11 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
         }
         overlayLabelEl.style.display = "none";
       } else {
-        // Overlay views (companies / objections / detail cards)
         counterEl.style.display = "none";
         progressBarEl.style.width = "0%";
         overlayLabelEl.style.display = "block";
       }
 
-      // Nav setup
       if (card.type === "main") {
         setupMainNav(card);
       } else if (card.type === "company") {
@@ -1059,7 +1033,6 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
         setupObjectionsMenuNav(card);
       }
 
-      // Attach button handlers for menu pills
       if (card.type === "companiesMenu" || card.type === "objectionsMenu") {
         const buttons = bodyEl.querySelectorAll(".pill-button[data-card]");
         buttons.forEach((btn) => {
@@ -1070,15 +1043,16 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
           });
         });
       }
+
+      // make sure coach mode visibility is respected on each render
+      updateCoachModeVisibility();
     }
 
     function setupMainNav(card) {
       backBtn.style.display = "inline-flex";
       nextBtn.style.display = "inline-flex";
 
-      backBtn.textContent = "";
       backBtn.innerHTML = `<span class="icon">←</span><span>Back</span>`;
-      nextBtn.textContent = "";
       nextBtn.innerHTML = `<span>Next</span><span class="icon">→</span>`;
 
       backBtn.disabled = !card.back;
@@ -1099,9 +1073,7 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
       backBtn.style.display = "inline-flex";
       nextBtn.style.display = "inline-flex";
 
-      backBtn.textContent = "";
       backBtn.innerHTML = `<span class="icon">←</span><span>Back to Companies</span>`;
-      nextBtn.textContent = "";
       nextBtn.innerHTML = `<span>Back to Script</span><span class="icon">↩︎</span>`;
 
       backBtn.disabled = false;
@@ -1124,7 +1096,6 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
       backBtn.style.display = "inline-flex";
       nextBtn.style.display = "none";
 
-      backBtn.textContent = "";
       backBtn.innerHTML = `<span class="icon">↩︎</span><span>Back to Script</span>`;
       backBtn.disabled = false;
 
@@ -1141,9 +1112,7 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
       backBtn.style.display = "inline-flex";
       nextBtn.style.display = "inline-flex";
 
-      backBtn.textContent = "";
       backBtn.innerHTML = `<span class="icon">←</span><span>Back to Objections</span>`;
-      nextBtn.textContent = "";
       nextBtn.innerHTML = `<span>Back to Script</span><span class="icon">↩︎</span>`;
 
       backBtn.disabled = false;
@@ -1166,7 +1135,6 @@ document.getElementById("coachModeBtn").addEventListener("click", () => {
       backBtn.style.display = "inline-flex";
       nextBtn.style.display = "none";
 
-      backBtn.textContent = "";
       backBtn.innerHTML = `<span class="icon">↩︎</span><span>Back to Script</span>`;
       backBtn.disabled = false;
 
