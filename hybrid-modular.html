@@ -401,16 +401,50 @@
         </div>
       </div>
       <div class="app-actions">
-        <button id="companiesBtn" class="chip-button primary-chip">
-          <span class="icon">🏢</span>
-          <span>Companies</span>
-        </button>
-        <button id="objectionsBtn" class="chip-button">
-          <span class="icon">⚠️</span>
-          <span>Objections</span>
-        </button>
-      </div>
-    </header>
+  <button id="coachModeBtn" class="chip-button">
+    <span class="icon">🎧</span>
+    <span>Coach Mode</span>
+  </button>
+  <button id="companiesBtn" class="chip-button primary-chip">
+    <span class="icon">🏢</span>
+    <span>Companies</span>
+  </button>
+  <button id="objectionsBtn" class="chip-button">
+    <span class="icon">⚠️</span>
+    <span>Objections</span>
+  </button>
+</div>
+      // ---------- COACH MODE TOGGLE ----------
+
+let coachModeOn = true; // internal notes visible by default
+
+function updateCoachModeVisibility() {
+  const notes = document.querySelectorAll(".internal-note");
+  notes.forEach((el) => {
+    el.style.display = coachModeOn ? "block" : "none";
+  });
+}
+
+document.getElementById("coachModeBtn").addEventListener("click", () => {
+  coachModeOn = !coachModeOn;
+  updateCoachModeVisibility();
+});
+// ---------- COACH MODE TOGGLE ----------
+
+let coachModeOn = true; // internal notes visible by default
+
+function updateCoachModeVisibility() {
+  const notes = document.querySelectorAll(".internal-note");
+  notes.forEach((el) => {
+    el.style.display = coachModeOn ? "block" : "none";
+  });
+}
+
+document.getElementById("coachModeBtn").addEventListener("click", () => {
+  coachModeOn = !coachModeOn;
+  updateCoachModeVisibility();
+});
+</header>
 
     <div class="divider"></div>
 
@@ -503,7 +537,7 @@
         next: "card3"
       },
 
-      card3: {
+          card3: {
         id: "card3",
         type: "main",
         tag: "Discovery",
@@ -514,33 +548,68 @@
           <p>“Are you familiar with Brad Lea and his content?”</p>
           <p><strong>If yes:</strong> “Nice. What have you seen from him so far?”</p>
           <p><strong>If no:</strong> “Brad Lea is the guy who built the training systems used by top entrepreneurs, major brands, and entire sales organizations around the world.”</p>
+
           <p>“What do you do for work right now?”</p>
           <p>“How long have you been doing that?”</p>
-          <p>“What kind of sales experience do you have?”</p>
-          <p>“Have you worked a commission-only role before?”</p>
-          <p>“What was your best year — how much did you make?”</p>
-          <p class="internal-note">This is where YOU determine if they qualify for a second interview.</p>
-          <p>“What are you going to do with the money when you start making more? What’s the mission for you?”</p>
+          <p>“How many hours are you putting in each week?”</p>
+          <p>“What’s your current monthly income, roughly?”</p>
+          <p>“What’s the most you’ve ever made in one year?”</p>
+
+          <p>“In a year from now, how much money would you need to be making to feel like you’re really winning?”</p>
+          <p>“What would you say is the biggest thing that’s held you back from earning that kind of money so far?”</p>
+
+          <p>“How do you feel about commission-only roles?”</p>
+          <p>“Do you have the ability to work remote — phone, computer, strong internet, quiet place to work?”</p>
+
           <p>“Do you do anything right now for personal development — reading, training, fitness, gratitude, anything like that?”</p>
-          <p class="internal-note">Note their energy — this sets up the next card.</p>
+          <p>“In the last 12 months, how much have you invested in yourself — books, courses, events, coaching?”</p>
+          <p>“What’s the last book or course you completed that you really feel leveled you up?”</p>
+
+          <p class="internal-note">
+            Optional rating questions (use on Zoom or when you have more time):<br>
+            “On a scale from 1–10, how would you rate yourself on sales and closing?”<br>
+            “How would you rate yourself on communicating with people, networking, building relationships, handling objections, staying focused, problem solving, dealing with stress, using social media, and overall tech?”<br>
+            “How would you rate your confidence, your health and fitness, and your financial health?”
+          </p>
+
+          <p class="internal-note">
+            Use as many of these as you need based on time and context. For dialer calls, pick a tight subset. For Zoom, you can go deeper.
+          </p>
         `,
         back: "card2",
         next: "card4"
       },
 
-      card4: {
+
+           card4: {
         id: "card4",
         type: "main",
         tag: "Qualification",
         title: "Assessment & Standards",
         body: `
           <p>“Alright, based on everything you’ve shared, here’s what I’m seeing…”</p>
-          <p class="internal-note">This is where YOU speak — mirror back 2–3 strengths and lightly mention one growth area.</p>
-          <p>“Here’s the deal — Brad is looking for killer closers making $250K and up, so you don’t immediately qualify to move into a position right this second.”</p>
-          <p>“However… we <em>do</em> have an option for you — as long as you’re grateful, accountable, coachable, and driven to be successful.”</p>
+          <p class="internal-note">
+            Mirror back 2–3 strengths and lightly mention one growth area in your own words.
+          </p>
+
+          <p>“Here’s the deal — Brad is looking for killer closers making $250K and up, so not everyone immediately qualifies to move into a position right this second.”</p>
+          <p>“When I talk to people, there are usually three paths:”</p>
+          <p><strong>“One:</strong> You’re exactly who we’re looking for and you move forward to a second interview.”</p>
+          <p><strong>“Two:</strong> You’re not a fit right now, and we part as friends so we don’t waste your time with follow-ups.”</p>
+          <p><strong>“Three:</strong> You have potential, but you need to be trained so you can actually convert high-quality leads from day one.”</p>
+
+          <p class="internal-note">
+            Use this card to decide which bucket they’re in.<br>
+            • If they’re clearly not a fit, you can use language like:<br>
+            “Based on everything you’ve shared, I don’t think this is the right fit right now. This is a high-responsibility, commission-only role that requires a lot of personal accountability, and from what you’ve said, that doesn’t sound like the right match at the moment. I appreciate your time, and if things change you’re always welcome to re-apply.”<br><br>
+            • If they’re strong enough for a direct role, shift into a ‘doesn’t need training’ conversation (expectations, 1099, standards).<br>
+            • Most of the time, you’ll segue into the Real Training path below.
+          </p>
+
+          <p>“However… we do have an option for you — as long as you’re grateful, accountable, coachable, and driven to be successful.”</p>
           <p>“Let me ask you something important…”</p>
           <p><strong>“Are you willing to go through a training without being paid?”</strong></p>
-          <p>“Top closers aren’t paid <em>for</em> training — they’re paid <em>because of</em> training.”</p>
+          <p>“Top closers aren’t paid for training — they’re paid because of training.”</p>
           <p>“Let me show you what Brad built, and how the system he designed actually works, since our main goal is to help more people become the closers he’s looking for.”</p>
         `,
         back: "card3",
@@ -598,7 +667,7 @@
         next: "card8"
       },
 
-      card8: {
+            card8: {
         id: "card8",
         type: "main",
         tag: "Commitment",
@@ -609,13 +678,16 @@
           <p>“To join Real Training, it’s a $5,000 commitment deposit.”</p>
           <p>“You complete Real Training, you onboard into one of the companies, and when you help that company generate $50,000 in revenue…”</p>
           <p>“…your full $5,000 is refunded back to you.”</p>
+
+          <p>“Listen — we’re willing to train you for free, but this program costs a lot of time and money to put people through.”</p>
+          <p>“The deposit is there to weed out the quitters and protect the coaches and resources we’re putting behind you.”</p>
           <p>“You’re not betting on Brad — you’re betting on yourself.”</p>
         `,
         back: "card7",
         next: "card9"
       },
 
-      card9: {
+            card9: {
         id: "card9",
         type: "main",
         tag: "Commitment",
@@ -627,6 +699,7 @@
           <p>“So he changed the model.”</p>
           <p>“Now there’s a little skin in the game — and the $5,000 comes back when you do your part.”</p>
           <p>“If you don’t give up, we won’t give up on you.”</p>
+          <p>“So the only real way you ‘lose’ is if you quit on yourself.”</p>
         `,
         back: "card8",
         next: "card10"
@@ -641,6 +714,7 @@
           <p>“Based on everything we’ve covered — your background, what you want to earn, how the training works, and how placement works…”</p>
           <p>“…does it make sense for you to get started with Real Training and bet on yourself today?”</p>
           <p>“Money aside — do you believe the training and the sales opportunity is something you want for yourself?”</p>
+          <p>“If it were just up to you — not friends, not family, not fear — would you want to move forward and bet on yourself with this?”</p>
           <p class="internal-note">
             If they say <strong>yes</strong>, move forward to payment instructions.<br />
             If they hesitate, open <strong>Objections</strong> and work through what’s unclear.
