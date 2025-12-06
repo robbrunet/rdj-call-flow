@@ -120,6 +120,12 @@
       border-color: #7dd3fc;
     }
 
+    .chip-button.active-toggle {
+      border-color: #7dd3fc;
+      background: rgba(37, 99, 235, 0.25);
+      color: #e5f5ff;
+    }
+
     .divider {
       height: 1px;
       margin-top: 10px;
@@ -304,12 +310,8 @@
     }
 
     @keyframes shimmer {
-      0% {
-        background-position: 0% 50%;
-      }
-      100% {
-        background-position: 200% 50%;
-      }
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
     }
 
     .nav-buttons {
@@ -373,6 +375,69 @@
       text-align: right;
     }
 
+    .dialer-hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .dialer-move-btn {
+      margin-top: 10px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+      color: #e0f2fe;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dialer-move-btn:hover {
+      background: radial-gradient(circle at top left, #38bdf8 0, #020617 70%);
+      border-color: #7dd3fc;
+    }
+
+    .dialer-move-btn span.icon {
+      font-size: 14px;
+    }
+
+    .disclosure-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .disclosure-button {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      background: rgba(15, 23, 42, 0.96);
+      color: #e5e7eb;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background 0.12s ease, border-color 0.12s ease,
+        transform 0.06s ease;
+      white-space: nowrap;
+    }
+
+    .disclosure-button span.icon {
+      font-size: 14px;
+    }
+
+    .disclosure-button:hover {
+      background: rgba(30, 64, 175, 0.9);
+      border-color: #7dd3fc;
+      transform: translateY(-0.5px);
+    }
+
     @media (max-width: 600px) {
       .card {
         padding: 20px 16px 18px;
@@ -387,6 +452,10 @@
       .app-title {
         font-size: 18px;
       }
+      .disclosure-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
     }
   </style>
 </head>
@@ -396,11 +465,18 @@
       <div class="app-title-block">
         <div class="app-title">Real Training &mdash; Closer Script</div>
         <div class="app-subtitle">
-          Teleprompter-style flow for Robert&rsquo;s calls &mdash; companies and
-          objections are always one tap away.
+          Teleprompter-style flow for Robert&rsquo;s calls &mdash; script vs dialer, companies, objections, and disclosures are always one tap away.
         </div>
       </div>
       <div class="app-actions">
+        <button id="coachModeBtn" class="chip-button">
+          <span class="icon">🎧</span>
+          <span>Coach Mode</span>
+        </button>
+        <button id="dialerModeBtn" class="chip-button">
+          <span class="icon">🎯</span>
+          <span>Dialer Mode</span>
+        </button>
         <button id="companiesBtn" class="chip-button primary-chip">
           <span class="icon">🏢</span>
           <span>Companies</span>
@@ -429,7 +505,7 @@
             <!-- script injected by JS -->
           </div>
           <div id="overlayLabel" class="overlay-label" style="display: none;">
-            Side view (does not affect main progress)
+            Overlay view (does not affect main progress)
           </div>
           <footer class="card-footer">
             <div class="progress-track">
@@ -452,7 +528,7 @@
   </div>
 
   <script>
-    // ---------- CARD DATA ----------
+    // ---------- CARD ORDER ----------
 
     const mainDeckOrder = [
       "card1",
@@ -468,13 +544,25 @@
       "card11"
     ];
 
+    const dialerDeckOrder = [
+      "dialer1",
+      "dialer2",
+      "dialer3",
+      "dialer4",
+      "dialer5",
+      "dialer6"
+    ];
+
+    // ---------- CARDS DATA ----------
+
     const cards = {
-      // MAIN FLOW CARDS
+      // MAIN SCRIPT CARDS
+
       card1: {
         id: "card1",
         type: "main",
         tag: "Opening",
-        title: "Greeting & Setup",
+        title: "Greeting and Setup",
         body: `
           <p>“Hey {first_name}, good to meet you. Thanks for hopping on.”</p>
           <p>“My name is Robert, and I work directly with Brad Lea’s team.”</p>
@@ -483,6 +571,11 @@
           <p>“My goal is to find out where you’re at, what you want, and whether these opportunities are a good fit for you.”</p>
           <p>“Does that work for you?”</p>
           <p>“This will take about 15 to 20 minutes. I’ll ask you a few questions, walk you through the opportunity, and we’ll see if it makes sense. Sound good?”</p>
+          <p class="internal-note">
+            Coach: Smile, relaxed tone. Don’t rush the compliance line.<br>
+            Pause after “Is that okay with you?” and let them answer.<br>
+            If they seem nervous, acknowledge it lightly: “No pressure here, this is just a conversation.”
+          </p>
         `,
         back: null,
         next: "card2"
@@ -498,6 +591,11 @@
           <p>“Brad is big on culture. He only wants to work with people who are serious about leveling up — not just curious.”</p>
           <p>“My job is simple: if it’s a fit, I’ll show you exactly how to plug in. If it’s not, we’ll part as friends.”</p>
           <p>“Sound good?”</p>
+          <p class="internal-note">
+            Coach: Calm and matter-of-fact, not threatening.<br>
+            Say “part as friends” with a smile — it lowers resistance and positions you as non-needy.<br>
+            If they hesitate, ask: “What’s on your mind before we dive in?”
+          </p>
         `,
         back: "card1",
         next: "card3"
@@ -514,15 +612,34 @@
           <p>“Are you familiar with Brad Lea and his content?”</p>
           <p><strong>If yes:</strong> “Nice. What have you seen from him so far?”</p>
           <p><strong>If no:</strong> “Brad Lea is the guy who built the training systems used by top entrepreneurs, major brands, and entire sales organizations around the world.”</p>
+
           <p>“What do you do for work right now?”</p>
           <p>“How long have you been doing that?”</p>
-          <p>“What kind of sales experience do you have?”</p>
-          <p>“Have you worked a commission-only role before?”</p>
-          <p>“What was your best year — how much did you make?”</p>
-          <p class="internal-note">This is where YOU determine if they qualify for a second interview.</p>
-          <p>“What are you going to do with the money when you start making more? What’s the mission for you?”</p>
+          <p>“How many hours are you putting in each week?”</p>
+          <p>“What’s your current monthly income, roughly?”</p>
+          <p>“What’s the most you’ve ever made in one year?”</p>
+
+          <p>“In a year from now, how much money would you need to be making to feel like you’re really winning?”</p>
+          <p>“What would you say is the biggest thing that’s held you back from earning that kind of money so far?”</p>
+
+          <p>“How do you feel about commission-only roles?”</p>
+          <p>“Do you have the ability to work remote — phone, computer, strong internet, quiet place to work?”</p>
+
           <p>“Do you do anything right now for personal development — reading, training, fitness, gratitude, anything like that?”</p>
-          <p class="internal-note">Note their energy — this sets up the next card.</p>
+          <p>“In the last 12 months, how much have you invested in yourself — books, courses, events, coaching?”</p>
+          <p>“What’s the last book or course you completed that you really feel leveled you up?”</p>
+
+          <p class="internal-note">
+            Coach: Let them talk. Your job is 80% listening, 20% steering.<br>
+            Take notes on money, time, motivation, and support — those become ammo later in the close.
+          </p>
+
+          <p class="internal-note">
+            Optional rating questions (for Zoom / longer calls):<br>
+            “On a scale from 1–10, how would you rate yourself on sales and closing?”<br>
+            “How would you rate yourself on communication, networking, handling objections, staying focused, problem solving, dealing with stress, using social media, overall tech?”<br>
+            “How would you rate your confidence, your health and fitness, and your financial health?”
+          </p>
         `,
         back: "card2",
         next: "card4"
@@ -532,15 +649,31 @@
         id: "card4",
         type: "main",
         tag: "Qualification",
-        title: "Assessment & Standards",
+        title: "Assessment and Standards",
         body: `
           <p>“Alright, based on everything you’ve shared, here’s what I’m seeing…”</p>
-          <p class="internal-note">This is where YOU speak — mirror back 2–3 strengths and lightly mention one growth area.</p>
-          <p>“Here’s the deal — Brad is looking for killer closers making $250K and up, so you don’t immediately qualify to move into a position right this second.”</p>
-          <p>“However… we <em>do</em> have an option for you — as long as you’re grateful, accountable, coachable, and driven to be successful.”</p>
+          <p class="internal-note">
+            Mirror back 2–3 strengths and lightly mention one growth area in your own words.<br>
+            Example: “You’ve got the work ethic and you’re clearly hungry — the main gap I see is consistent training and a better vehicle.”
+          </p>
+
+          <p>“Here’s the deal — Brad is looking for killer closers making $250K and up, so not everyone immediately qualifies to move into a position right this second.”</p>
+          <p>“When I talk to people, there are usually three paths:”</p>
+          <p><strong>“One:</strong> You’re exactly who we’re looking for and you move forward to a second interview.”</p>
+          <p><strong>“Two:</strong> You’re not a fit right now, and we part as friends so we don’t waste your time with follow-ups.”</p>
+          <p><strong>“Three:</strong> You have potential, but you need to be trained so you can actually convert high-quality leads from day one.”</p>
+
+          <p class="internal-note">
+            Coach: Decide which bucket they’re in.<br>
+            • If clearly not a fit, let them go respectfully.<br>
+            • If strong enough, you can talk direct placement.<br>
+            • Most of the time, move into the training path below without making it feel like a downgrade.
+          </p>
+
+          <p>“However… we do have an option for you — as long as you’re grateful, accountable, coachable, and driven to be successful.”</p>
           <p>“Let me ask you something important…”</p>
           <p><strong>“Are you willing to go through a training without being paid?”</strong></p>
-          <p>“Top closers aren’t paid <em>for</em> training — they’re paid <em>because of</em> training.”</p>
+          <p>“Top closers aren’t paid for training — they’re paid because of training.”</p>
           <p>“Let me show you what Brad built, and how the system he designed actually works, since our main goal is to help more people become the closers he’s looking for.”</p>
         `,
         back: "card3",
@@ -551,7 +684,7 @@
         id: "card5",
         type: "main",
         tag: "Foundation",
-        title: "Brad & LightSpeed VT",
+        title: "Brad and LightSpeed VT",
         body: `
           <p>“Training high-level closers — that’s the mission here.”</p>
           <p>“Brad built <strong>LightSpeed VT</strong>, the training system used by Tony Robbins, Grant Cardone, General Motors, the UFC, Top Chef, Zig Ziglar, and dozens of franchise and sales organizations.”</p>
@@ -559,7 +692,10 @@
           <p>“On top of that, Brad owns multiple companies across software, financial services, events, coaching, and sales training. Those are the vehicles we plug people into once they’re trained and producing.”</p>
           <p>“Real Training is the engine he built so people can learn the exact mindset, skill set, and habits that helped him become ultra-successful — and apply it in their own life or career.”</p>
           <p>“And honestly, some people never take a sales position at all… because once they apply these tactics to their own business, their income skyrockets on its own.”</p>
-          <p class="internal-note">Tap <strong>Companies</strong> any time if they want more detail on Brad’s ecosystem.</p>
+          <p class="internal-note">
+            Coach: If they ask “What exactly would I be doing?”, tap <strong>Companies</strong> and briefly walk through one or two lanes.<br>
+            Don’t deep-dive all six companies — give one or two examples, then come back to the script.
+          </p>
         `,
         back: "card4",
         next: "card6"
@@ -576,6 +712,11 @@
           <p><strong>“Skill set”</strong> is the structure — the questions, the framing, the process, the presentation, the objection handling, the closing.</p>
           <p><strong>“Habits”</strong> are the daily routines and standards that keep you consistent instead of emotional.</p>
           <p>“These three pillars are what turn good reps into killers — and killers into top producers.”</p>
+          <p class="internal-note">
+            Coach: Don’t read this like a brochure.<br>
+            Pick one pillar that matches what they told you earlier (mindset, skills, or habits) and tie it back to their situation.<br>
+            Example: “You told me you’re already a hard worker — this is about sharpening the skill set so your effort actually pays more.”
+          </p>
         `,
         back: "card5",
         next: "card7"
@@ -585,14 +726,15 @@
         id: "card7",
         type: "main",
         tag: "Placement",
-        title: "Placement & Ecosystem",
+        title: "Placement and Ecosystem",
         body: `
           <p>“Once you’re trained and producing, there are multiple companies in Brad’s ecosystem where performers can be placed — depending on fit and timing.”</p>
-          <p>“When you join Real Training and complete the program, you’re guaranteed placement into one of Brad’s core companies.”</p>
-          <p>“And starting next year, there will also be partner companies that plug into the same system — meaning even more opportunities for trained closers.”</p>
           <p>“Most programs teach you how to sell, charge you thousands, and then leave you stranded with no job.”</p>
           <p>“Brad built this differently — you get trained, you get sharpened, and then you get plugged into a real vehicle where you can actually produce.”</p>
-          <p class="internal-note">Tap <strong>Companies</strong> any time if they want details on LightSpeed VT, Real Financial, Real Merchant, Real Coach, Real Success Events, Dropping Bombs, Closer School, or Real Training itself.</p>
+          <p class="internal-note">
+            Coach: Use social proof and logic, not hype.<br>
+            “We don’t want trained people sitting on the bench — the whole model is built around putting producers into the right vehicle.”
+          </p>
         `,
         back: "card6",
         next: "card8"
@@ -609,7 +751,15 @@
           <p>“To join Real Training, it’s a $5,000 commitment deposit.”</p>
           <p>“You complete Real Training, you onboard into one of the companies, and when you help that company generate $50,000 in revenue…”</p>
           <p>“…your full $5,000 is refunded back to you.”</p>
+
+          <p>“Listen — we’re willing to train you for free, but this program costs a lot of time and money to put people through.”</p>
+          <p>“The deposit is there to weed out the quitters and protect the coaches and resources we’re putting behind you.”</p>
           <p>“You’re not betting on Brad — you’re betting on yourself.”</p>
+          <p class="internal-note">
+            Coach: Say “$5,000” calmly and confidently — don’t flinch, don’t speed up.<br>
+            Immediately follow with the refund explanation so they don’t anchor on “fee.”<br>
+            If they react strongly, acknowledge it and jump to <strong>Explain Deposit</strong> in Objections.
+          </p>
         `,
         back: "card7",
         next: "card9"
@@ -627,6 +777,12 @@
           <p>“So he changed the model.”</p>
           <p>“Now there’s a little skin in the game — and the $5,000 comes back when you do your part.”</p>
           <p>“If you don’t give up, we won’t give up on you.”</p>
+          <p>“So the only real way you ‘lose’ is if you quit on yourself.”</p>
+          <p class="internal-note">
+            Coach: Keep this calm and grounded, not defensive.<br>
+            Reframe risk: it’s not the program — it’s whether they show up and finish.<br>
+            If they’re values-driven, link this to integrity and follow-through.
+          </p>
         `,
         back: "card8",
         next: "card10"
@@ -641,9 +797,11 @@
           <p>“Based on everything we’ve covered — your background, what you want to earn, how the training works, and how placement works…”</p>
           <p>“…does it make sense for you to get started with Real Training and bet on yourself today?”</p>
           <p>“Money aside — do you believe the training and the sales opportunity is something you want for yourself?”</p>
+          <p>“If it were just up to you — not friends, not family, not fear — would you want to move forward and bet on yourself with this?”</p>
           <p class="internal-note">
-            If they say <strong>yes</strong>, move forward to payment instructions.<br />
-            If they hesitate, open <strong>Objections</strong> and work through what’s unclear.
+            Coach: Ask, then <strong>shut up</strong>.<br>
+            If they say “yes, but…” — the “but” is your real objection.<br>
+            Use the Objections Hub instead of winging it.
           </p>
         `,
         back: "card9",
@@ -661,15 +819,264 @@
           <p>“There’s also a $1,500 option that doesn’t include the refund — that’s for people who see the value in the training and are willing to spend the money either way.”</p>
           <p>“Those payments can be well under $100 a month, and a lot of people keep their current role while they ramp this up part-time.”</p>
           <p class="internal-note">
-            IF THEY’RE READY: continue into the close and walk them through payment.<br />
-            IF THEY HESITATE: go back into objections and create clarity — don’t let them drift.
+            Coach: If they’re ready, read the correct disclosure <strong>word-for-word</strong> before sending the link.<br>
+            Then send the link and walk them through the page.<br>
+            If they hesitate, jump back into Objections and create clarity — don’t let them drift.
           </p>
+          <div class="disclosure-buttons">
+            <button class="disclosure-button" data-target="disc_5k">
+              <span class="icon">📄</span>
+              <span>$5,000 Deposit Disclosure</span>
+            </button>
+            <button class="disclosure-button" data-target="disc_1500">
+              <span class="icon">📄</span>
+              <span>$1,500 Fee Disclosure</span>
+            </button>
+            <button class="disclosure-button" data-target="payment_portal">
+              <span class="icon">💳</span>
+              <span>Payment Portal</span>
+            </button>
+          </div>
         `,
         back: "card10",
         next: null
       },
 
-      // ---------- COMPANIES HUB & COMPANY CARDS ----------
+      // DISCLOSURE & PAYMENT OVERLAYS
+
+      disc_5k: {
+        id: "disc_5k",
+        type: "overlay",
+        tag: "Disclosure",
+        title: "$5,000 Deposit Disclosure (Read Word-for-Word)",
+        body: `
+          <p><strong>REAL TRAINING – Refundable Commitment Deposit ($5,000)</strong></p>
+          <p><strong>What you’re getting</strong></p>
+          <p>Enrollment via $5,000 refundable commitment deposit (training itself is free; this is not tuition)</p>
+          <p>A complete performance system: Mindset, Skillsets, Habits</p>
+          <p>Skill modules in Sales &amp; Closing, Communication, Marketing, Networking, Personal Branding, AI</p>
+          <p>Placement path into a 1099 commission-only sales role (no W-2, no base)</p>
+          <p>Group coaching, accountability, and tools to execute</p>
+          <p><strong>Refundable deposit — how it works</strong></p>
+          <p>You receive the $5,000 back after:</p>
+          <p>• Program completion, then<br>
+             • Accepting and performing in a 1099 role with an approved company, and<br>
+             • Generating $50,000 in collected sales in good standing (follow rules, don’t quit, no fraud).</p>
+          <p>Once verified, payment is made on the next pay cycle, no later than 14 days.</p>
+          <p><strong>Important notes</strong></p>
+          <p>• 1099 commission-only roles (no W-2, no base salary from Real Training)<br>
+             • Training is self-paced; timelines vary—no guaranteed time to completion<br>
+             • No income guarantees; examples are illustrations only<br>
+             • Lead flow varies by company; no guaranteed leads<br>
+             • Written terms control over anything said by a representative</p>
+          <p class="internal-note">
+            Coach: Read this slowly and clearly.<br>
+            Ask: “Do you have any questions about any of that before I send you the enrollment link?”
+          </p>
+        `
+      },
+
+      disc_1500: {
+        id: "disc_1500",
+        type: "overlay",
+        tag: "Disclosure",
+        title: "$1,500 Fee Disclosure (Read Word-for-Word)",
+        body: `
+          <p><strong>REAL TRAINING – Training Access Fee (Non-Refundable) — $1,500</strong></p>
+          <p><strong>What you’re getting</strong></p>
+          <p>Access to Real Training and Live Coaching</p>
+          <p>A complete performance system: Mindset • Skillsets • Habits</p>
+          <p>Skill modules: Sales &amp; Closing, Communication, Marketing, Networking, Personal Branding, AI</p>
+          <p><strong>Important distinctions</strong></p>
+          <p>• This is a $1,500 non-refundable training fee<br>
+             • It is not a refundable commitment deposit and will not be paid back<br>
+             • Includes placement upon successful completion; all opportunities are 1099 commission-only (no W-2, no base)</p>
+          <p><strong>Program notes</strong></p>
+          <p>• Training is self-paced; timelines vary<br>
+             • No income guarantees; examples are illustrations only<br>
+             • Lead flow varies by company; no guaranteed leads<br>
+             • Written terms control; calls may be recorded</p>
+          <p class="internal-note">
+            Coach: Same here — read word-for-word.<br>
+            Then: “Any questions on that before I send the link?”
+          </p>
+        `
+      },
+
+      payment_portal: {
+        id: "payment_portal",
+        type: "overlay",
+        tag: "Payment",
+        title: "Payment Portal",
+        body: `
+          <p>“I’m going to send you one secure payment portal with all the options in one place.”</p>
+          <p>“When you open it, you’ll see the $5,000 refundable deposit and the $1,500 non-refundable option. We’ll walk through it together.”</p>
+          <p class="internal-note">
+            Coach: Paste or text this URL while on the call:<br>
+            <strong>https://robbrunet.github.io/real-training-payments/</strong><br>
+            Have them open it while you stay on the line and handle any questions live.
+          </p>
+          <p>
+            <a href="https://robbrunet.github.io/real-training-payments/" target="_blank" style="text-decoration:none; padding:8px 14px; border-radius:999px; border:1px solid rgba(148,163,184,0.8); background:rgba(15,23,42,0.96); color:#e5e7eb; font-size:13px; display:inline-flex; align-items:center; gap:6px;">
+              <span>🔗 Open Payment Portal</span>
+            </a>
+          </p>
+          <p class="dialer-hint">
+            (This card is just your on-screen reminder. The actual link is sent through your dialer / GHL / text.)
+          </p>
+        `
+      },
+
+      // DIALER CARDS (FAST STACK MODE)
+
+      dialer1: {
+        id: "dialer1",
+        type: "dialer",
+        tag: "Dialer",
+        title: "Fast Opener (Dialer)",
+        body: `
+          <p>“Hi, is this {first_name}?”</p>
+          <p>“Hey {first_name}, this is Robert with Brad Lea’s team. You’d submitted an application online for a remote sales position. Did I catch you in the middle of something, or do you have a minute?”</p>
+          <p><strong>If yes:</strong> “Perfect, I’ll be brief. Quick heads up — this call may be recorded for training and quality purposes. Is that okay with you?"<br>
+             <strong>If busy:</strong> “No problem — I can call you back later today or tomorrow. What works better?”</p>
+          <p class="internal-note">
+            Coach: Keep this light and fast. Confirm it’s them, remind them where they applied, and see if you have 60–90 seconds.<br>
+            If timing is bad, schedule a callback in the dialer and move the disposition so they don’t get hammered again.
+          </p>
+          <p class="dialer-hint">
+            Dialer: all calls are recorded. No voicemails — mark no answer as “no contact” and let it fall back into the stack.
+          </p>
+          <button class="dialer-move-btn" data-target="card2">
+            <span class="icon">↪</span>
+            <span>Move to Script – Frame (Card 2)</span>
+          </button>
+        `,
+        back: null,
+        next: "dialer2"
+      },
+
+      dialer2: {
+        id: "dialer2",
+        type: "dialer",
+        tag: "Dialer",
+        title: "Mini Discovery (Dialer)",
+        body: `
+          <p>“Just so I don’t waste your time — are you still looking for a remote commission-based sales role?”</p>
+          <p><strong>If yes:</strong> “Got it. Are you working right now, or between roles?”</p>
+          <p>“Have you ever done sales or commission-only before?”</p>
+          <p>“If this worked out, what kind of monthly income would you want to grow into?”</p>
+          <p class="internal-note">
+            Coach: Think “quick snapshot,” not full interview.<br>
+            Screenshot the contact card if helpful so you have name, number, email, and 1–2 key notes ready for the longer call.
+          </p>
+          <p class="dialer-hint">
+            Always set a callback or move straight into Zoom / full script if they have time.<br>
+            Use dialer scheduling so they’re pulled out of the stack and you remember to follow up.
+          </p>
+          <button class="dialer-move-btn" data-target="card3">
+            <span class="icon">↪</span>
+            <span>Continue Discovery – Script (Card 3)</span>
+          </button>
+        `,
+        back: "dialer1",
+        next: "dialer3"
+      },
+
+      dialer3: {
+        id: "dialer3",
+        type: "dialer",
+        tag: "Dialer",
+        title: "Set Expectation (Dialer)",
+        body: `
+          <p>“Here’s what I’d like to do…”</p>
+          <p>“I’ll get you on a quick Zoom / longer call so we can go deeper, walk you through Brad’s companies, and see if there’s a real fit.”</p>
+          <p>“On that call we’ll talk about training, expectations, and how placement works. Fair?”</p>
+          <p class="internal-note">
+            Coach: This is your “stack 2” bridge.<br>
+            If they have time right now, transition straight into the full script.<br>
+            If not, schedule a Zoom or callback inside the dialer before hanging up.
+          </p>
+          <button class="dialer-move-btn" data-target="card4">
+            <span class="icon">↪</span>
+            <span>Move to Script – Qualification (Card 4)</span>
+          </button>
+        `,
+        back: "dialer2",
+        next: "dialer4"
+      },
+
+      dialer4: {
+        id: "dialer4",
+        type: "dialer",
+        tag: "Dialer",
+        title: "Training Pivot (Dialer)",
+        body: `
+          <p>“Just so you know — Brad’s looking for killers, not just curious people.”</p>
+          <p>“Most people I talk to fall into one of three buckets: already a killer, not a fit, or someone with potential who needs real training.”</p>
+          <p>“From what you’ve told me so far, you sound like someone who could benefit from the training path.”</p>
+          <p class="internal-note">
+            Coach: Use this when you’ve gotten a bit of info and want to see if they’re open to training before a longer call.<br>
+            It mirrors Card 4 but in dialer speed.
+          </p>
+          <button class="dialer-move-btn" data-target="card5">
+            <span class="icon">↪</span>
+            <span>Move to Script – Brad &amp; VT (Card 5)</span>
+          </button>
+        `,
+        back: "dialer3",
+        next: "dialer5"
+      },
+
+      dialer5: {
+        id: "dialer5",
+        type: "dialer",
+        tag: "Dialer",
+        title: "Commit to Training (Dialer)",
+        body: `
+          <p>“Let me ask you something important…”</p>
+          <p><strong>“If this really is the right fit, are you willing to go through serious training before you start taking high-quality leads?”</strong></p>
+          <p>“Top closers don’t get paid for training — they get paid because of training.”</p>
+          <p class="internal-note">
+            Coach: Same heartbeat as Card 4, just faster.<br>
+            If they say “no” here, you don’t need to spend 20 minutes pitching the program.
+          </p>
+          <button class="dialer-move-btn" data-target="card6">
+            <span class="icon">↪</span>
+            <span>Move to Script – 3 Pillars (Card 6)</span>
+          </button>
+        `,
+        back: "dialer4",
+        next: "dialer6"
+      },
+
+      dialer6: {
+        id: "dialer6",
+        type: "dialer",
+        tag: "Dialer – Commitment",
+        title: "Commitment Pre-Frame (Dialer)",
+        body: `
+          <p>“Perfect — on the longer call, I’ll walk you through how the training works and what the commitment looks like.”</p>
+
+          <p>“There <em>is</em> a commitment deposit associated with the training, but we don’t need to get into all of that right now — we’ll cover everything properly when we have enough time.”</p>
+
+          <p>“My goal on that call is simple: show you exactly how the opportunity works, answer your questions, and then <em>you</em> decide whether it makes sense for you — fair enough?”</p>
+
+          <p>“Let’s go ahead and set that up — what time can you actually sit down and talk for a few minutes?”</p>
+
+          <p class="internal-note">
+            Coach: This is your commitment pre-frame — keep it fast.<br>
+            You must mention there <em>is</em> a deposit so it doesn’t blindside them later, but do <strong>not</strong> explain details on a quick dialer call.<br><br>
+            If they press for “how much?”, say: “We’ll go over all of that in the longer call so you can see the full picture.”<br>
+            Your only job here is to book the Zoom / callback, move them out of the stack, and jot notes (name, number, email, main motivation, key concern).
+          </p>
+
+          <p class="dialer-hint">
+            Use the dialer’s schedule feature so the follow-up time is set in the future and they’re not recycled immediately back into the stack.
+          </p>
+        `
+      },
+
+      // COMPANIES HUB
 
       companies_menu: {
         id: "companies_menu",
@@ -689,9 +1096,7 @@
             <button class="pill-button" data-card="co_realtraining"><span class="icon">🔥</span>Real Training</button>
           </div>
           <p class="internal-note">Use this hub when they want specifics. Always bring it back to the main script once they’re clear.</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
       co_lightspeed: {
@@ -705,9 +1110,7 @@
           <p>“As a closer, you’re talking to decision-makers — owners, executives, leaders — about building or upgrading their training platform.”</p>
           <p>“Deals are high-ticket. You’re typically selling packages that can range from tens of thousands of dollars and up, and the commission structure is a flat percentage per deal, so one good month can be a six-figure run-rate.”</p>
           <p>“If you like strategic conversations with serious businesses and you want big pops per deal, LightSpeed VT is a great fit.”</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
       co_realfinancial: {
@@ -720,9 +1123,7 @@
           <p>“The commissions in this space are strong, and there’s long-term upside if you like helping people with protection, retirement, and wealth strategies.”</p>
           <p>“The powerful part here is that you get help closing your first several deals and you’re building a book of business that can pay you for years.”</p>
           <p>“If you like the idea of bigger commission checks and you’re comfortable having real money conversations, Real Financial is a strong lane.”</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
       co_realmerchant: {
@@ -735,9 +1136,7 @@
           <p>“You’re talking to business owners about lowering a bill they already hate paying — so the value proposition is simple: better terms, better support, more money back in their pocket.”</p>
           <p>“You can earn solid upfront commissions and, over time, build residual income from the processing volume. As your portfolio grows, that book of business can become an asset in itself.”</p>
           <p>“If you want recurring income and like working with local or online businesses, Real Merchant is a strong long-term play.”</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
       co_realcoach: {
@@ -750,9 +1149,7 @@
           <p>“The system helps clients clarify their offer, pricing, and delivery — and gives them a framework to build a real coaching business instead of just a side hustle.”</p>
           <p>“You’re talking to experts, coaches, and service providers who know a lot, but haven’t turned that knowledge into a scalable business yet.”</p>
           <p>“If you enjoy working with coaches and creators and you like helping people productize what they know, Real Coach is a great lane.”</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
       co_realevents: {
@@ -764,9 +1161,7 @@
           <p>“Real Success Events is Brad’s live events business — both at his headquarters in Vegas and with partners.”</p>
           <p>“You’re selling tickets, event packages, and sometimes backend offers tied to those events.”</p>
           <p>“If you like high energy environments, live experiences, and talking to people who are actively investing in their growth, this path can be a lot of fun.”</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
       co_droppingbombs: {
@@ -778,9 +1173,7 @@
           <p>“Dropping Bombs is Brad’s entrepreneurship podcast — hundreds of episodes, a global audience, and constant exposure to high-level guests.”</p>
           <p>“On the business side, there are opportunities around sponsorships, brand placements, and strategic partnerships.”</p>
           <p>“If you like media, relationships, and connecting brands with audiences, this is a creative lane.”</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
       co_closerschool: {
@@ -793,9 +1186,7 @@
           <p>“A lot of what’s inside Real Training comes from years of refining what works in Closer School.”</p>
           <p>“Some companies buy Closer School just to certify and level up their own sales teams.”</p>
           <p>“If you love the craft of selling and want to help others become better closers, this is where that content lives.”</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
       co_realtraining: {
@@ -808,12 +1199,10 @@
           <p>“It focuses on mindset, skill set, and habits — the exact things Brad used to build his career and his companies.”</p>
           <p>“Everyone goes through Real Training first, then gets plugged into the vehicle where they can win the biggest.”</p>
           <p>“This is the foundation — the sharper you get here, the better you’ll do anywhere you plug in.”</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
-      // ---------- OBJECTIONS HUB & OBJECTION CARDS ----------
+      // OBJECTIONS HUB
 
       objections_menu: {
         id: "objections_menu",
@@ -823,98 +1212,90 @@
         body: `
           <p>Tap the objection they raise so you can stay calm, clear, and in control of the frame.</p>
           <div class="pill-grid">
-            <button class="pill-button" data-card="obj_money"><span class="icon">💵</span>Money is tight</button>
-            <button class="pill-button" data-card="obj_think"><span class="icon">🤔</span>I need to think about it</button>
-            <button class="pill-button" data-card="obj_spouse"><span class="icon">💍</span>I need to talk to my spouse</button>
-            <button class="pill-button" data-card="obj_work"><span class="icon">⚖️</span>What if it doesn’t work?</button>
-            <button class="pill-button" data-card="obj_options"><span class="icon">📑</span>Explain the options again</button>
+            <button class="pill-button" data-card="obj_money"><span class="icon">💵</span>Money is Tight</button>
+            <button class="pill-button" data-card="obj_think"><span class="icon">🤔</span>Think About It</button>
+            <button class="pill-button" data-card="obj_spouse"><span class="icon">💍</span>Spousal/Partner</button>
+            <button class="pill-button" data-card="obj_work"><span class="icon">⚖️</span>If It Doesn’t Work</button>
+            <button class="pill-button" data-card="obj_options"><span class="icon">📑</span>Explain Deposit</button>
           </div>
           <p class="internal-note">Use this when they get stuck — handle the real concern, then circle back to the close.</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
       obj_money: {
         id: "obj_money",
         type: "objection",
         tag: "Objection",
-        title: "“Money is Tight”",
+        title: "Money is Tight",
         body: `
           <p>“Totally fair — I get that.”</p>
           <p>“The way I look at it is this: if you plan on producing $50,000 in revenue anyway, the money is coming back to you.”</p>
           <p>“So the real question isn’t ‘Can you afford $5,000 forever?’ — the question is, do you believe you’ll execute and follow through to the point where you earn that $50,000?”</p>
           <p>“If you believe you’re going to do the work and stick with it, this isn’t an expense — it’s a temporary commitment that gets refunded when you do your part.”</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
       obj_think: {
         id: "obj_think",
         type: "objection",
         tag: "Objection",
-        title: "“I Need to Think About It”",
+        title: "Think About It",
         body: `
           <p>“I respect that — thinking is good.”</p>
           <p>“Usually when someone says they need to think about it, it means there’s one or two things that aren’t totally clear yet.”</p>
           <p>“What specifically are you unsure about?”</p>
           <p>“If we can clear that up right now, would there be anything else holding you back?”</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
       obj_spouse: {
         id: "obj_spouse",
         type: "objection",
         tag: "Objection",
-        title: "“I Need to Talk to My Spouse”",
+        title: "Spousal/Partner",
         body: `
           <p>“Totally understand — they should be in the loop.”</p>
           <p>“When you talk to them, what are you going to tell them about why you want to do this and what it could do for your income and your future?”</p>
           <p>“Money aside, is this something you personally want to move forward with?”</p>
           <p>“If you and I can get you to a clear yes, it’s much easier to bring them a confident conversation instead of a maybe.”</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
       obj_work: {
         id: "obj_work",
         type: "objection",
         tag: "Objection",
-        title: "“What If It Doesn’t Work?”",
+        title: "If It Doesn’t Work",
         body: `
           <p>“Great question.”</p>
           <p>“The way this doesn’t work is if you don’t show up or you quit.”</p>
           <p>“If you don’t give up, we won’t give up on you. You complete the training, you get placed, and when you help generate $50,000 in revenue, your commitment deposit comes back to you.”</p>
           <p>“So the real risk isn’t the program — it’s whether you’re willing to commit and follow through.”</p>
-        `,
-        back: null,
-        next: null
+        `
       },
 
       obj_options: {
         id: "obj_options",
         type: "objection",
         tag: "Objection",
-        title: "“Explain the Options Again”",
+        title: "Explain Deposit",
         body: `
           <p>“Of course — let me break it down one more time.”</p>
           <p>“The main path is a $5,000 commitment deposit. You go through Real Training, you onboard into one of Brad’s companies, and once you’ve helped generate at least $50,000 in revenue, that $5,000 is refunded back to you.”</p>
           <p>“There’s also a $1,500 option that does <strong>not</strong> include the refund. It’s for people who see the value in the training and are willing to spend the money either way. The payments can be well under $100 a month, and a lot of people keep their current role while they ramp this up part-time.”</p>
           <p>“Either way, you get the full training and the opportunity — it just comes down to how you want to structure the commitment.”</p>
-        `,
-        back: null,
-        next: null
+        `
       }
     };
 
-    // ---------- APP STATE & RENDERING ----------
+    // ---------- APP STATE ----------
 
     let currentCardId = "card1";
     let lastMainCardId = "card1";
+    let lastDialerCardId = "dialer1";
+
+    let coachModeOn = true;
+    let dialerModeOn = false;
 
     const tagEl = document.getElementById("cardTagText");
     const titleEl = document.getElementById("cardTitle");
@@ -924,15 +1305,32 @@
     const backBtn = document.getElementById("backBtn");
     const nextBtn = document.getElementById("nextBtn");
     const overlayLabelEl = document.getElementById("overlayLabel");
+    const coachModeBtn = document.getElementById("coachModeBtn");
+    const dialerModeBtn = document.getElementById("dialerModeBtn");
 
     function isMainCard(cardId) {
       const c = cards[cardId];
       return c && c.type === "main";
     }
 
+    function isDialerCard(cardId) {
+      const c = cards[cardId];
+      return c && c.type === "dialer";
+    }
+
     function showMainCard(cardId) {
       currentCardId = cardId;
       lastMainCardId = cardId;
+      dialerModeOn = false;
+      dialerModeBtn.classList.remove("active-toggle");
+      renderCard(cards[cardId]);
+    }
+
+    function showDialerCard(cardId) {
+      currentCardId = cardId;
+      lastDialerCardId = cardId;
+      dialerModeOn = true;
+      dialerModeBtn.classList.add("active-toggle");
       renderCard(cards[cardId]);
     }
 
@@ -941,17 +1339,25 @@
       renderCard(cards[cardId]);
     }
 
+    // ---------- COACH MODE VISIBILITY ----------
+
+    function updateCoachModeVisibility() {
+      const notes = bodyEl.querySelectorAll(".internal-note");
+      notes.forEach((el) => {
+        el.style.display = coachModeOn ? "block" : "none";
+      });
+      coachModeBtn.classList.toggle("active-toggle", coachModeOn);
+    }
+
+    // ---------- RENDERING ----------
+
     function renderCard(card) {
       if (!card) return;
 
-      // Tag & title
       tagEl.textContent = card.tag || "";
       titleEl.textContent = card.title || "";
-
-      // Body
       bodyEl.innerHTML = card.body || "";
 
-      // Progress + counter
       if (card.type === "main") {
         const idx = mainDeckOrder.indexOf(card.id);
         const total = mainDeckOrder.length;
@@ -965,27 +1371,43 @@
           progressBarEl.style.width = "0%";
         }
         overlayLabelEl.style.display = "none";
+      } else if (card.type === "dialer") {
+        const idx = dialerDeckOrder.indexOf(card.id);
+        const total = dialerDeckOrder.length;
+        if (idx !== -1) {
+          counterEl.style.display = "block";
+          counterEl.textContent = `Dialer Card ${idx + 1} of ${total}`;
+          const pct = ((idx + 1) / total) * 100;
+          progressBarEl.style.width = `${pct}%`;
+        } else {
+          counterEl.style.display = "none";
+          progressBarEl.style.width = "0%";
+        }
+        overlayLabelEl.style.display = "block";
+        overlayLabelEl.textContent = "Dialer view (fast stack mode)";
       } else {
-        // Overlay views (companies / objections / detail cards)
         counterEl.style.display = "none";
         progressBarEl.style.width = "0%";
         overlayLabelEl.style.display = "block";
+        overlayLabelEl.textContent = "Side view (does not affect main progress)";
       }
 
-      // Nav setup
       if (card.type === "main") {
         setupMainNav(card);
+      } else if (card.type === "dialer") {
+        setupDialerNav(card);
       } else if (card.type === "company") {
-        setupCompanyNav(card);
+        setupCompanyNav();
       } else if (card.type === "companiesMenu") {
-        setupCompaniesMenuNav(card);
+        setupCompaniesMenuNav();
       } else if (card.type === "objection") {
-        setupObjectionNav(card);
+        setupObjectionNav();
       } else if (card.type === "objectionsMenu") {
-        setupObjectionsMenuNav(card);
+        setupObjectionsMenuNav();
+      } else if (card.type === "overlay") {
+        setupOverlayNav();
       }
 
-      // Attach button handlers for menu pills
       if (card.type === "companiesMenu" || card.type === "objectionsMenu") {
         const buttons = bodyEl.querySelectorAll(".pill-button[data-card]");
         buttons.forEach((btn) => {
@@ -996,15 +1418,39 @@
           });
         });
       }
+
+      const dialerMoveBtns = bodyEl.querySelectorAll(".dialer-move-btn[data-target]");
+      dialerMoveBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.getAttribute("data-target");
+          if (!target) return;
+          showMainCard(target);
+        });
+      });
+
+      const disclosureBtns = bodyEl.querySelectorAll(".disclosure-button[data-target]");
+      disclosureBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.getAttribute("data-target");
+          if (!target) return;
+          if (target === "payment_portal") {
+            showCard("payment_portal");
+          } else {
+            showCard(target);
+          }
+        });
+      });
+
+      updateCoachModeVisibility();
     }
+
+    // ---------- NAV SETUP ----------
 
     function setupMainNav(card) {
       backBtn.style.display = "inline-flex";
       nextBtn.style.display = "inline-flex";
 
-      backBtn.textContent = "";
       backBtn.innerHTML = `<span class="icon">←</span><span>Back</span>`;
-      nextBtn.textContent = "";
       nextBtn.innerHTML = `<span>Next</span><span class="icon">→</span>`;
 
       backBtn.disabled = !card.back;
@@ -1021,13 +1467,38 @@
       };
     }
 
-    function setupCompanyNav(card) {
+    function setupDialerNav(card) {
       backBtn.style.display = "inline-flex";
       nextBtn.style.display = "inline-flex";
 
-      backBtn.textContent = "";
+      backBtn.innerHTML = `<span class="icon">←</span><span>Back</span>`;
+      nextBtn.innerHTML = `<span>Next</span><span class="icon">→</span>`;
+
+      const idx = dialerDeckOrder.indexOf(card.id);
+      const hasBack = idx > 0;
+      const hasNext = idx !== -1 && idx < dialerDeckOrder.length - 1;
+
+      backBtn.disabled = !hasBack;
+      nextBtn.disabled = !hasNext;
+
+      backBtn.onclick = () => {
+        if (!hasBack) return;
+        const prevId = dialerDeckOrder[idx - 1];
+        showDialerCard(prevId);
+      };
+
+      nextBtn.onclick = () => {
+        if (!hasNext) return;
+        const nextId = dialerDeckOrder[idx + 1];
+        showDialerCard(nextId);
+      };
+    }
+
+    function setupCompanyNav() {
+      backBtn.style.display = "inline-flex";
+      nextBtn.style.display = "inline-flex";
+
       backBtn.innerHTML = `<span class="icon">←</span><span>Back to Companies</span>`;
-      nextBtn.textContent = "";
       nextBtn.innerHTML = `<span>Back to Script</span><span class="icon">↩︎</span>`;
 
       backBtn.disabled = false;
@@ -1046,11 +1517,10 @@
       };
     }
 
-    function setupCompaniesMenuNav(card) {
+    function setupCompaniesMenuNav() {
       backBtn.style.display = "inline-flex";
       nextBtn.style.display = "none";
 
-      backBtn.textContent = "";
       backBtn.innerHTML = `<span class="icon">↩︎</span><span>Back to Script</span>`;
       backBtn.disabled = false;
 
@@ -1063,13 +1533,11 @@
       };
     }
 
-    function setupObjectionNav(card) {
+    function setupObjectionNav() {
       backBtn.style.display = "inline-flex";
       nextBtn.style.display = "inline-flex";
 
-      backBtn.textContent = "";
       backBtn.innerHTML = `<span class="icon">←</span><span>Back to Objections</span>`;
-      nextBtn.textContent = "";
       nextBtn.innerHTML = `<span>Back to Script</span><span class="icon">↩︎</span>`;
 
       backBtn.disabled = false;
@@ -1088,11 +1556,10 @@
       };
     }
 
-    function setupObjectionsMenuNav(card) {
+    function setupObjectionsMenuNav() {
       backBtn.style.display = "inline-flex";
       nextBtn.style.display = "none";
 
-      backBtn.textContent = "";
       backBtn.innerHTML = `<span class="icon">↩︎</span><span>Back to Script</span>`;
       backBtn.disabled = false;
 
@@ -1105,7 +1572,29 @@
       };
     }
 
-    // ---------- TOP-LEVEL BUTTONS ----------
+    function setupOverlayNav() {
+      backBtn.style.display = "inline-flex";
+      nextBtn.style.display = "inline-flex";
+
+      backBtn.innerHTML = `<span class="icon">↩︎</span><span>Back to Script</span>`;
+      nextBtn.innerHTML = `<span>Close Overlay</span><span class="icon">✕</span>`;
+
+      backBtn.disabled = false;
+      nextBtn.disabled = false;
+
+      const goBack = () => {
+        if (lastMainCardId) {
+          showMainCard(lastMainCardId);
+        } else {
+          showMainCard("card1");
+        }
+      };
+
+      backBtn.onclick = goBack;
+      nextBtn.onclick = goBack;
+    }
+
+    // ---------- TOP BUTTONS ----------
 
     document.getElementById("companiesBtn").addEventListener("click", () => {
       if (isMainCard(currentCardId)) {
@@ -1119,6 +1608,22 @@
         lastMainCardId = currentCardId;
       }
       showCard("objections_menu");
+    });
+
+    coachModeBtn.addEventListener("click", () => {
+      coachModeOn = !coachModeOn;
+      updateCoachModeVisibility();
+    });
+
+    dialerModeBtn.addEventListener("click", () => {
+      dialerModeOn = !dialerModeOn;
+      if (dialerModeOn) {
+        const startId = lastDialerCardId || "dialer1";
+        showDialerCard(startId);
+      } else {
+        const startMain = lastMainCardId || "card1";
+        showMainCard(startMain);
+      }
     });
 
     // ---------- INITIAL RENDER ----------
