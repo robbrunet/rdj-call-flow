@@ -47,6 +47,7 @@
       justify-content: space-between;
       gap: 12px;
       padding: 8px 4px 4px;
+      flex-wrap: wrap;
     }
 
     .app-title-block {
@@ -120,10 +121,10 @@
       border-color: #7dd3fc;
     }
 
-    .chip-button.toggle-active {
-      border-color: #38bdf8;
-      background: radial-gradient(circle at top left, #0ea5e9 0, #020617 70%);
+    .chip-button.active-chip {
+      border-color: #7dd3fc;
       color: #e5f5ff;
+      background: radial-gradient(circle at top left, #0ea5e9 0, #020617 65%);
     }
 
     .divider {
@@ -177,6 +178,7 @@
       align-items: baseline;
       gap: 12px;
       margin-bottom: 12px;
+      flex-wrap: wrap;
     }
 
     .card-tag {
@@ -240,7 +242,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 10px;
-      margin-top: 8px;
+      margin-top: 12px;
     }
 
     .pill-button {
@@ -276,12 +278,17 @@
       transform: translateY(0.5px) scale(0.99);
     }
 
+    .pill-link {
+      text-decoration: none;
+    }
+
     .card-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-top: 14px;
       gap: 12px;
+      flex-wrap: wrap;
     }
 
     .progress-track {
@@ -291,6 +298,7 @@
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid rgba(51, 65, 85, 0.9);
       overflow: hidden;
+      min-width: 160px;
     }
 
     .progress-bar {
@@ -402,12 +410,11 @@
       <div class="app-title-block">
         <div class="app-title">Real Training &mdash; Closer Script</div>
         <div class="app-subtitle">
-          Teleprompter-style flow for Robert&rsquo;s calls &mdash; companies,
-          objections, and dialer mode are always one tap away.
+          Teleprompter-style flow for Robert&rsquo;s calls &mdash; dialer, script, companies, objections and disclosures all one tap away.
         </div>
       </div>
       <div class="app-actions">
-        <button id="coachModeBtn" class="chip-button">
+        <button id="coachModeBtn" class="chip-button active-chip">
           <span class="icon">🎧</span>
           <span>Coach Mode</span>
         </button>
@@ -466,7 +473,7 @@
   </div>
 
   <script>
-    // ---------- CARD DATA ----------
+    // ---------- MAIN DECK ORDER ----------
 
     const mainDeckOrder = [
       "card1",
@@ -482,21 +489,18 @@
       "card11"
     ];
 
-    const dialerDeckOrder = [
-      "dialer1",
-      "dialer2",
-      "dialer3",
-      "dialer4",
-      "dialer5"
-    ];
+    const dialerDeckOrder = ["dialer1", "dialer2", "dialer3", "dialer4"];
+
+    // ---------- CARD DATA ----------
 
     const cards = {
-      // MAIN FLOW CARDS
+      // ===== MAIN FLOW CARDS =====
+
       card1: {
         id: "card1",
         type: "main",
         tag: "Opening",
-        title: "Greeting & Setup",
+        title: "Greeting &amp; Setup",
         body: `
           <p>“Hey {first_name}, good to meet you. Thanks for hopping on.”</p>
           <p>“My name is Robert, and I work directly with Brad Lea’s team.”</p>
@@ -572,7 +576,7 @@
         id: "card4",
         type: "main",
         tag: "Qualification",
-        title: "Assessment & Standards",
+        title: "Assessment &amp; Standards",
         body: `
           <p>“Alright, based on everything you’ve shared, here’s what I’m seeing…”</p>
           <p class="internal-note">
@@ -607,7 +611,7 @@
         id: "card5",
         type: "main",
         tag: "Foundation",
-        title: "Brad & LightSpeed VT",
+        title: "Brad &amp; LightSpeed VT",
         body: `
           <p>“Training high-level closers — that’s the mission here.”</p>
           <p>“Brad built <strong>LightSpeed VT</strong>, the training system used by Tony Robbins, Grant Cardone, General Motors, the UFC, Top Chef, Zig Ziglar, and dozens of franchise and sales organizations.”</p>
@@ -641,7 +645,7 @@
         id: "card7",
         type: "main",
         tag: "Placement",
-        title: "Placement & Ecosystem",
+        title: "Placement &amp; Ecosystem",
         body: `
           <p>“Once you’re trained and producing, there are multiple companies in Brad’s ecosystem where performers can be placed — depending on fit and timing.”</p>
           <p>“When you join Real Training and complete the program, you’re guaranteed placement into one of Brad’s core companies.”</p>
@@ -703,7 +707,7 @@
           <p>“Money aside — do you believe the training and the sales opportunity is something you want for yourself?”</p>
           <p>“If it were just up to you — not friends, not family, not fear — would you want to move forward and bet on yourself with this?”</p>
           <p class="internal-note">
-            If they say <strong>yes</strong>, move forward to payment instructions.<br />
+            If they say <strong>yes</strong>, move forward to payment instructions and the mandatory disclosure.<br />
             If they hesitate, open <strong>Objections</strong> and work through what’s unclear.
           </p>
         `,
@@ -715,56 +719,165 @@
         id: "card11",
         type: "main",
         tag: "Payment",
-        title: "Payment Structure",
+        title: "Payment Structure &amp; Next Steps",
         body: `
           <p>“If we move forward, I’ll send you a secure payment link with a few options.”</p>
           <p>“You’ll choose whether you want to structure the $5,000 as paid in full, split, or financed.”</p>
           <p>“There’s also a $1,500 option that doesn’t include the refund — that’s for people who see the value in the training and are willing to spend the money either way.”</p>
           <p>“Those payments can be well under $100 a month, and a lot of people keep their current role while they ramp this up part-time.”</p>
-          <p class="internal-note">
-            IF THEY’RE READY: continue into the close and walk them through payment.<br />
-            IF THEY HESITATE: go back into objections and create clarity — don’t let them drift.
-          </p>
-          <p class="internal-note">
-            When you’ve read the mandatory disclosure and they’re clear, send them to your unified payment portal:
-          </p>
-          <p class="internal-note">
-            <a href="https://robbrunet.github.io/real-training-payments/" target="_blank" rel="noopener noreferrer">
-              Open Real Training Payment Options
+
+          <div class="pill-grid">
+            <button class="pill-button open-disclosure" data-card="disclosure_5k">
+              <span class="icon">📜</span>
+              <span>Read $5,000 Deposit Disclosure</span>
+            </button>
+
+            <button class="pill-button open-disclosure" data-card="disclosure_1500">
+              <span class="icon">📜</span>
+              <span>Read $1,500 Training Fee Disclosure</span>
+            </button>
+
+            <a class="pill-button pill-link"
+               href="https://robbrunet.github.io/real-training-payments/"
+               target="_blank" rel="noopener noreferrer">
+              <span class="icon">💳</span>
+              <span>Open Payment Portal</span>
             </a>
+          </div>
+
+          <p class="internal-note">
+            MUST (Compliance): Before sending any payment link, tap the appropriate disclosure above and read it out loud on the recorded line.<br/>
+            • $5,000 Refundable Commitment Deposit script<br/>
+            • $1,500 Non-Refundable Training Fee script<br/><br/>
+            After you read the correct disclosure and answer questions, then send them to the payment portal while staying on the call.
           </p>
         `,
         back: "card10",
         next: null
       },
 
-      // ---------- DIALER MODE CARDS ----------
+      // ===== DISCLOSURE CARDS =====
+
+      disclosure_5k: {
+        id: "disclosure_5k",
+        type: "disclosure",
+        tag: "Disclosure",
+        title: "REAL TRAINING – Refundable Commitment Deposit ($5,000)",
+        body: `
+          <p><strong>Read this entire block out loud before taking payment for the $5,000 option:</strong></p>
+
+          <p><strong>REAL TRAINING – Refundable Commitment Deposit ($5,000)</strong></p>
+
+          <p><strong>What you’re getting</strong></p>
+          <ul>
+            <li>Enrollment via $5,000 refundable commitment deposit (training itself is free; this is not tuition)</li>
+            <li>A complete performance system: Mindset, Skillsets, Habits</li>
+            <li>Skill modules in Sales &amp; Closing, Communication, Marketing, Networking, Personal Branding, AI</li>
+            <li>Placement path into a 1099 commission-only sales role (no W-2, no base)</li>
+            <li>Group coaching, accountability, and tools to execute</li>
+          </ul>
+
+          <p><strong>Refundable deposit — how it works</strong></p>
+          <ul>
+            <li>You receive the $5,000 back after:</li>
+            <li>Program completion, then</li>
+            <li>Accepting and performing in a 1099 role with an approved company, and</li>
+            <li>Generating $50,000 in collected sales in good standing (follow rules, don’t quit, no fraud).</li>
+            <li>Once verified, payment is made on the next pay cycle, no later than 14 days.</li>
+          </ul>
+
+          <p><strong>Important notes</strong></p>
+          <ul>
+            <li>1099 commission-only roles (no W-2, no base salary from Real Training)</li>
+            <li>Training is self-paced; timelines vary—no guaranteed time to completion</li>
+            <li>No income guarantees; examples are illustrations only</li>
+            <li>Lead flow varies by company; no guaranteed leads</li>
+            <li>Written terms control over anything said by a representative</li>
+          </ul>
+
+          <p class="internal-note">
+            After reading this, pause and ask:<br/>
+            “Do you have any questions about any of that before we proceed with the $5,000 commitment deposit?”<br/><br/>
+            Once questions are answered, go back to the Payment card and send them to the payment portal.
+          </p>
+        `,
+        back: null,
+        next: null
+      },
+
+      disclosure_1500: {
+        id: "disclosure_1500",
+        type: "disclosure",
+        tag: "Disclosure",
+        title: "REAL TRAINING – Training Access Fee (Non-Refundable) — $1,500",
+        body: `
+          <p><strong>Read this entire block out loud before taking payment for the $1,500 option:</strong></p>
+
+          <p><strong>REAL TRAINING – Training Access Fee (Non-Refundable) — $1,500</strong></p>
+
+          <p><strong>What you’re getting</strong></p>
+          <ul>
+            <li>Access to Real Training and Live Coaching</li>
+            <li>A complete performance system: Mindset • Skillsets • Habits</li>
+            <li>Skill modules: Sales &amp; Closing, Communication, Marketing, Networking, Personal Branding, AI</li>
+          </ul>
+
+          <p><strong>Important distinctions</strong></p>
+          <ul>
+            <li>This is a $1,500 non-refundable training fee</li>
+            <li>It is not a refundable commitment deposit and will not be paid back</li>
+            <li>Includes placement upon successful completion; all opportunities are 1099 commission-only (no W-2, no base)</li>
+          </ul>
+
+          <p><strong>Program notes</strong></p>
+          <ul>
+            <li>Training is self-paced; timelines vary</li>
+            <li>No income guarantees; examples are illustrations only</li>
+            <li>Lead flow varies by company; no guaranteed leads</li>
+            <li>Written terms control; calls may be recorded</li>
+          </ul>
+
+          <p class="internal-note">
+            After reading this, pause and ask:<br/>
+            “Do you have any questions about any of that before we proceed with the $1,500 non-refundable training fee?”<br/><br/>
+            Once questions are answered, go back to the Payment card and send them to the payment portal.
+          </p>
+        `,
+        back: null,
+        next: null
+      },
+
+      // ===== DIALER CARDS (OVERLAY) =====
 
       dialer1: {
         id: "dialer1",
         type: "dialer",
         tag: "Dialer",
-        title: "Dialer Opening & Status Check",
+        title: "Dialer Opening &amp; Status Check",
         body: `
           <p>“Hi {first_name}, this is Robert with Brad Lea’s team — how are you doing?”</p>
           <p>“You’d submitted an application online for a remote sales position with one of Brad’s companies.”</p>
           <p>“Did you already find a position, or are you still open to remote sales opportunities?”</p>
 
           <p class="internal-note">
-            Tone: calm, friendly, confident. You’re just confirming they remember the app and that they’re still open.
+            Coach:<br>
+            1) Stay calm, friendly, and confident — you’re just confirming they remember the app and that they’re still open.<br>
+            2) If they’re conversational, continue the interview with discovery questions — <strong>not pushy</strong>, just curious. Think of how Stephen flowed: keep it smooth and let them talk.<br>
+            3) The dialer calls are recorded. Do <strong>not</strong> leave voicemails — if they don’t answer, set disposition to “no contact / end interaction” so they go back into the stack.
           </p>
 
           <p>“Do you have a quick minute right now, or are you in the middle of something?”</p>
 
           <p class="internal-note">
-            • If they’re <strong>busy</strong>: schedule a callback, set disposition in the dialer (no voicemail), screenshot the card with name + number, and note the callback time.<br>
-            • If they’re <strong>free</strong>: you can continue into quick discovery here, or jump into the full script.
+            • If they’re <strong>busy</strong>: schedule a callback in the dialer, set the disposition, and move the callback time into the future (past your Zoom or callback slot) so they’re temporarily out of the stack.<br>
+            • Screenshot the contact card so you capture <strong>name, number, email</strong> and take a quick note.<br>
+            • You can always review the recording later if you want to tighten your delivery.
           </p>
 
           <div class="pill-grid">
-            <button class="pill-button move-to-script" data-target="card4">
+            <button class="pill-button move-to-script" data-target="card2">
               <span class="icon">📋</span>
-              <span>Move to Full Script (Card 4)</span>
+              <span>Move to Script (Card 2)</span>
             </button>
           </div>
         `,
@@ -776,24 +889,25 @@
         id: "dialer2",
         type: "dialer",
         tag: "Dialer",
-        title: "Fast Discovery (Dialer)",
+        title: "Quick Discovery (Dialer Version)",
         body: `
-          <p>“Just so I don’t waste your time — let me ask you a couple of quick questions.”</p>
+          <p>“Cool. I’ll keep this quick — just want to see where you’re at.”</p>
           <p>“What are you doing for work right now?”</p>
-          <p>“Roughly what are you making per month?”</p>
-          <p>“If things went well over the next 12 months, what would you want that monthly number to be?”</p>
-          <p>“Have you ever done commission-only or performance-based roles before?”</p>
+          <p>“Are you looking for something part-time, full-time, or you’re open to either?”</p>
+          <p>“Have you ever done sales or commission-only before?”</p>
+          <p>“Right now, are you more in ‘I need income ASAP’ mode, or ‘I’m looking to level up over the next 6–12 months’?”</p>
 
           <p class="internal-note">
-            Keep this tight. Your goal is: are they hungry, do they have a work ethic, and can they handle commission-only?
+            Coach:<br>
+            • Listen more than you talk. Use little pauses — let them fill the space.<br>
+            • You’re just sorting: serious vs curious, broke vs resourceful, victim vs responsible.<br>
+            • If they have time and decent energy, you can move them into the full script and slow down.
           </p>
 
-          <p>“If this turned out to be a real shot at significantly increasing your income — are you willing to put in extra effort to learn and get good at this?”</p>
-
           <div class="pill-grid">
-            <button class="pill-button move-to-script" data-target="card4">
-              <span class="icon">📋</span>
-              <span>Move to Full Script (Card 4)</span>
+            <button class="pill-button move-to-script" data-target="card3">
+              <span class="icon">🔎</span>
+              <span>Continue Discovery (Card 3)</span>
             </button>
           </div>
         `,
@@ -805,23 +919,25 @@
         id: "dialer3",
         type: "dialer",
         tag: "Dialer",
-        title: "Dialer Assessment & Training Setup",
+        title: "Training Option (Short)",
         body: `
-          <p>“Based on what you’ve shared, I can see you’ve got some potential…”</p>
-          <p>“Here’s the deal — Brad’s looking for killers making $250K and up. Not everyone is ready to plug straight into a position.”</p>
-          <p>“Usually people fall into one of three groups: already there, not a fit, or high potential but needs to be trained to convert high-quality leads from day one.”</p>
+          <p>“Here’s what I’m thinking based on what you’ve shared…”</p>
+          <p>“Brad is looking for killers making $250K and up. Most people I talk to are capable, but they need the right training and vehicle.”</p>
+          <p>“So the main path here is: you go through Real Training, we sharpen your mindset, skill set, and habits, and then we plug you into a company where you can actually produce.”</p>
+
+          <p>“If we decided to move forward, would you be willing to go through training without being paid for the training itself — and then get paid on the production that comes after?”</p>
 
           <p class="internal-note">
-            Quickly bucket them in your head. If they’re not a fit at all, you can politely end and part as friends.
+            Coach:<br>
+            • This is your mini “are you willing to be trained?” filter for dialer calls.<br>
+            • If they push back hard here, don’t force it — you can still invite them to apply again later when they’re ready.<br>
+            • If they lean in, that’s your green-light to move into the foundation cards.
           </p>
-
-          <p>“For you, this would look like going through training first so you’re sharp enough to step into a real vehicle and produce.”</p>
-          <p>“Are you open to going through a serious training process <em>before</em> stepping into a sales seat?”</p>
 
           <div class="pill-grid">
             <button class="pill-button move-to-script" data-target="card5">
-              <span class="icon">🎓</span>
-              <span>Move to Script at Card 5</span>
+              <span class="icon">🏗️</span>
+              <span>Move to Foundation (Card 5)</span>
             </button>
           </div>
         `,
@@ -833,64 +949,43 @@
         id: "dialer4",
         type: "dialer",
         tag: "Dialer",
-        title: "Dialer Training Snapshot",
+        title: "Deposit &amp; Close (Short)",
         body: `
-          <p>“Let me give you the 10,000-foot view of what Brad built.”</p>
-          <p>“He built <strong>LightSpeed VT</strong>, the training platform behind Tony Robbins, Grant Cardone, GM, the UFC, and a ton of other brands.”</p>
-          <p>“Real Training is the system he created to build closers — focused on mindset, skill set, and habits.”</p>
-          <p>“You go through this, and then you get plugged into the vehicle where you can win the biggest.”</p>
+          <p>“Because of how much support and coaching is involved, Brad added a refundable commitment deposit.”</p>
+          <p>“It’s $5,000 — fully refundable when you complete the training, get placed, and help generate at least $50,000 in collected revenue while staying in good standing.”</p>
+          <p>“There’s also a $1,500 option that doesn’t include the refund, for people who just want the training either way.”</p>
+
+          <p>“If everything else made sense — is that range something you’d be willing to find a way to handle for the right opportunity?”</p>
 
           <p class="internal-note">
-            This is the “commercial break.” Keep it energetic but efficient. If they’re leaning in, that’s your green light to go deeper in the main script.
-          </p>
-
-          <div class="pill-grid">
-            <button class="pill-button move-to-script" data-target="card6">
-              <span class="icon">🧠</span>
-              <span>Move to Script at Card 6</span>
-            </button>
-          </div>
-        `,
-        back: "dialer3",
-        next: "dialer5"
-      },
-
-      dialer5: {
-        id: "dialer5",
-        type: "dialer",
-        tag: "Dialer",
-        title: "Dialer Deposit & Fast Close Setup",
-        body: `
-          <p>“Now — the only way this doesn’t work is if you don’t show up or you quit.”</p>
-          <p>“We’re willing to train you, coach you, and plug you into a real opportunity, but we need to know you’re serious.”</p>
-          <p>“That’s why there’s a $5,000 <strong>refundable commitment deposit</strong> — not a fee for the training, not a fee for leads, and not a guaranteed income purchase.”</p>
-
-          <p class="internal-note">
-            Keep this short and calm. You’re framing the deposit, not trying to do the whole legal disclosure here.
+            Coach:<br>
+            • This is not where you word-vomit financing details — keep it high-level and see if they’re philosophically open.<br>
+            • If they say “yes, if it’s legit” → perfect, move to the full Commitment cards and eventually the Payment + Disclosure screen.<br>
+            • Always schedule a follow-up (Zoom or phone) in the dialer if you’re not closing them right now — move the callback out so they don’t get thrown back into the active stack immediately.
           </p>
 
           <div class="pill-grid">
             <button class="pill-button move-to-script" data-target="card8">
               <span class="icon">💰</span>
-              <span>Go to Deposit Card (8)</span>
+              <span>Move to Commitment (Card 8)</span>
             </button>
             <button class="pill-button move-to-script" data-target="card10">
               <span class="icon">✅</span>
-              <span>Jump to Primary Close (10)</span>
+              <span>Move to Close (Card 10)</span>
             </button>
           </div>
         `,
-        back: "dialer4",
+        back: "dialer3",
         next: null
       },
 
-      // ---------- COMPANIES HUB & COMPANY CARDS ----------
+      // ===== COMPANIES HUB & CARDS =====
 
       companies_menu: {
         id: "companies_menu",
         type: "companiesMenu",
         tag: "Companies",
-        title: "Brad’s Companies & Vehicles",
+        title: "Brad’s Companies &amp; Vehicles",
         body: `
           <p>Tap a company below whenever a prospect asks, “What would I actually be doing?” or “What are the opportunities?”</p>
           <div class="pill-grid">
@@ -1028,7 +1123,7 @@
         next: null
       },
 
-      // ---------- OBJECTIONS HUB & OBJECTION CARDS ----------
+      // ===== OBJECTIONS HUB & CARDS =====
 
       objections_menu: {
         id: "objections_menu",
@@ -1126,13 +1221,14 @@
       }
     };
 
-    // ---------- APP STATE & DOM REFERENCES ----------
+    // ---------- APP STATE ----------
 
     let currentCardId = "card1";
     let lastMainCardId = "card1";
     let lastDialerCardId = "dialer1";
+
     let coachModeOn = true;
-    let inDialerMode = false;
+    let dialerModeOn = false;
 
     const tagEl = document.getElementById("cardTagText");
     const titleEl = document.getElementById("cardTitle");
@@ -1159,18 +1255,28 @@
     function showMainCard(cardId) {
       currentCardId = cardId;
       lastMainCardId = cardId;
-      const card = cards[cardId];
-      renderCard(card);
+      dialerModeOn = false;
+      updateDialerModeButton();
+      renderCard(cards[cardId]);
     }
 
     function showCard(cardId) {
+      const c = cards[cardId];
+      if (!c) return;
+
       currentCardId = cardId;
-      const card = cards[cardId];
-      if (!card) return;
-      if (card.type === "dialer") {
+
+      if (c.type === "main") {
+        lastMainCardId = cardId;
+        dialerModeOn = false;
+        updateDialerModeButton();
+      } else if (c.type === "dialer") {
         lastDialerCardId = cardId;
+        dialerModeOn = true;
+        updateDialerModeButton();
       }
-      renderCard(card);
+
+      renderCard(c);
     }
 
     function updateCoachModeVisibility() {
@@ -1180,29 +1286,25 @@
       });
     }
 
+    function updateDialerModeButton() {
+      if (dialerModeOn) {
+        dialerModeBtn.classList.add("active-chip");
+        dialerModeBtn.innerHTML = `<span class="icon">📞</span><span>Dialer Mode</span>`;
+      } else {
+        dialerModeBtn.classList.remove("active-chip");
+        dialerModeBtn.innerHTML = `<span class="icon">📜</span><span>Script Mode</span>`;
+      }
+    }
+
     function renderCard(card) {
       if (!card) return;
 
-      // Tag & title
       tagEl.textContent = card.tag || "";
       titleEl.textContent = card.title || "";
-
-      // Body content
       bodyEl.innerHTML = card.body || "";
 
-      // Attach Move-to-Script buttons (for dialer cards)
-      const moveButtons = bodyEl.querySelectorAll(".move-to-script[data-target]");
-      moveButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const target = btn.getAttribute("data-target");
-          if (!target) return;
-          inDialerMode = false;
-          dialerModeBtn.classList.remove("toggle-active");
-          showMainCard(target);
-        });
-      });
+      updateCoachModeVisibility();
 
-      // Progress + counter + overlay label
       if (card.type === "main") {
         const idx = mainDeckOrder.indexOf(card.id);
         const total = mainDeckOrder.length;
@@ -1216,22 +1318,23 @@
           progressBarEl.style.width = "0%";
         }
         overlayLabelEl.style.display = "none";
-      } else if (card.type === "dialer") {
-        counterEl.style.display = "none";
-        progressBarEl.style.width = "0%";
-        overlayLabelEl.style.display = "block";
-        overlayLabelEl.textContent =
-          "Dialer mode — fast track (does not affect main progress)";
       } else {
-        // Overlay views (companies / objections / detail cards)
         counterEl.style.display = "none";
         progressBarEl.style.width = "0%";
+
+        if (card.type === "dialer") {
+          overlayLabelEl.textContent =
+            "Dialer view (live calls are recorded — no voicemails; use dispositions & schedule callbacks)";
+        } else if (card.type === "disclosure") {
+          overlayLabelEl.textContent =
+            "Disclosure overlay (must be read on recorded line before payment)";
+        } else {
+          overlayLabelEl.textContent =
+            "Side view (does not affect main progress)";
+        }
         overlayLabelEl.style.display = "block";
-        overlayLabelEl.textContent =
-          "Side view (does not affect main progress)";
       }
 
-      // Nav setup
       if (card.type === "main") {
         setupMainNav(card);
       } else if (card.type === "company") {
@@ -1244,22 +1347,35 @@
         setupObjectionsMenuNav(card);
       } else if (card.type === "dialer") {
         setupDialerNav(card);
+      } else if (card.type === "disclosure") {
+        setupDisclosureNav(card);
       }
 
-      // Attach button handlers for menu pills
-      if (card.type === "companiesMenu" || card.type === "objectionsMenu") {
-        const buttons = bodyEl.querySelectorAll(".pill-button[data-card]");
-        buttons.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const target = btn.getAttribute("data-card");
-            if (!target) return;
-            showCard(target);
-          });
+      const menuButtons = bodyEl.querySelectorAll(".pill-button[data-card]");
+      menuButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.getAttribute("data-card");
+          if (!target) return;
+          showCard(target);
         });
-      }
+      });
 
-      // Apply current Coach Mode visibility
-      updateCoachModeVisibility();
+      const moveToScriptButtons = bodyEl.querySelectorAll(".move-to-script");
+      moveToScriptButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.getAttribute("data-target");
+          if (!target) return;
+          showMainCard(target);
+        });
+      });
+
+      const openDisclosureButtons = bodyEl.querySelectorAll(".open-disclosure");
+      openDisclosureButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.getAttribute("data-card") || "disclosure_5k";
+          showCard(target);
+        });
+      });
     }
 
     function setupMainNav(card) {
@@ -1280,27 +1396,6 @@
       nextBtn.onclick = () => {
         if (!card.next) return;
         showMainCard(card.next);
-      };
-    }
-
-    function setupDialerNav(card) {
-      backBtn.style.display = "inline-flex";
-      nextBtn.style.display = "inline-flex";
-
-      backBtn.innerHTML = `<span class="icon">←</span><span>Prev Dialer</span>`;
-      nextBtn.innerHTML = `<span>Next Dialer</span><span class="icon">→</span>`;
-
-      backBtn.disabled = !card.back;
-      nextBtn.disabled = !card.next;
-
-      backBtn.onclick = () => {
-        if (!card.back) return;
-        showCard(card.back);
-      };
-
-      nextBtn.onclick = () => {
-        if (!card.next) return;
-        showCard(card.next);
       };
     }
 
@@ -1382,48 +1477,121 @@
       };
     }
 
+    function setupDialerNav(card) {
+      backBtn.style.display = "inline-flex";
+      nextBtn.style.display = "inline-flex";
+
+      if (card.back) {
+        backBtn.innerHTML = `<span class="icon">←</span><span>Prev Dialer Card</span>`;
+        backBtn.disabled = false;
+        backBtn.onclick = () => {
+          showCard(card.back);
+        };
+      } else {
+        backBtn.innerHTML = `<span class="icon">↩︎</span><span>Back to Script</span>`;
+        backBtn.disabled = false;
+        backBtn.onclick = () => {
+          if (lastMainCardId) {
+            showMainCard(lastMainCardId);
+          } else {
+            showMainCard("card1");
+          }
+        };
+      }
+
+      if (card.next) {
+        nextBtn.innerHTML = `<span>Next Dialer Card</span><span class="icon">→</span>`;
+        nextBtn.disabled = false;
+        nextBtn.onclick = () => {
+          showCard(card.next);
+        };
+      } else {
+        nextBtn.innerHTML = `<span>Back to Script</span><span class="icon">↩︎</span>`;
+        nextBtn.disabled = false;
+        nextBtn.onclick = () => {
+          if (lastMainCardId) {
+            showMainCard(lastMainCardId);
+          } else {
+            showMainCard("card1");
+          }
+        };
+      }
+    }
+
+    function setupDisclosureNav(card) {
+      backBtn.style.display = "inline-flex";
+      nextBtn.style.display = "inline-flex";
+
+      backBtn.innerHTML = `<span class="icon">↩︎</span><span>Back to Payment</span>`;
+      nextBtn.innerHTML = `<span>Open Payment Portal</span><span class="icon">💳</span>`;
+
+      backBtn.disabled = false;
+      nextBtn.disabled = false;
+
+      backBtn.onclick = () => {
+        showMainCard("card11");
+      };
+
+      nextBtn.onclick = () => {
+        window.open(
+          "https://robbrunet.github.io/real-training-payments/",
+          "_blank",
+          "noopener"
+        );
+      };
+    }
+
     // ---------- TOP-LEVEL BUTTONS ----------
-
-    document.getElementById("companiesBtn").addEventListener("click", () => {
-      if (isMainCard(currentCardId)) {
-        lastMainCardId = currentCardId;
-      }
-      showCard("companies_menu");
-    });
-
-    document.getElementById("objectionsBtn").addEventListener("click", () => {
-      if (isMainCard(currentCardId)) {
-        lastMainCardId = currentCardId;
-      }
-      showCard("objections_menu");
-    });
 
     coachModeBtn.addEventListener("click", () => {
       coachModeOn = !coachModeOn;
-      coachModeBtn.classList.toggle("toggle-active", coachModeOn);
+      if (coachModeOn) {
+        coachModeBtn.classList.add("active-chip");
+      } else {
+        coachModeBtn.classList.remove("active-chip");
+      }
       updateCoachModeVisibility();
     });
 
     dialerModeBtn.addEventListener("click", () => {
-      if (inDialerMode) {
-        // Leaving dialer mode: go back to last main card
-        inDialerMode = false;
-        dialerModeBtn.classList.remove("toggle-active");
+      if (!dialerModeOn) {
+        if (isMainCard(currentCardId)) {
+          lastMainCardId = currentCardId;
+        }
+        dialerModeOn = true;
+        updateDialerModeButton();
+        showCard(lastDialerCardId || "dialer1");
+      } else {
+        dialerModeOn = false;
+        updateDialerModeButton();
+        if (isDialerCard(currentCardId)) {
+          lastDialerCardId = currentCardId;
+        }
         if (lastMainCardId) {
           showMainCard(lastMainCardId);
         } else {
           showMainCard("card1");
         }
-      } else {
-        // Entering dialer mode: remember current main card, then show last dialer card
+      }
+    });
+
+    document
+      .getElementById("companiesBtn")
+      .addEventListener("click", () => {
         if (isMainCard(currentCardId)) {
           lastMainCardId = currentCardId;
         }
-        inDialerMode = true;
-        dialerModeBtn.classList.add("toggle-active");
-        showCard(lastDialerCardId || "dialer1");
-      }
-    });
+        showCard("companies_menu");
+      });
+
+    document
+      .getElementById("objectionsBtn")
+      .addEventListener("click", () => {
+        if (isMainCard(currentCardId)) {
+          lastMainCardId = currentCardId;
+        }
+        showCard("objections_menu");
+      });
 
     // ---------- INITIAL RENDER ----------
 
