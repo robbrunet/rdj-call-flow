@@ -1055,27 +1055,33 @@
         next: "dialer6"
       },
 
-      dialer6: {
-        id: "dialer6",
-        type: "dialer",
-        tag: "Dialer",
-        title: "Deposit & Close (Dialer)",
-        body: `
-          <p>“On the longer call, I’ll walk you through how the training works and the commitment — including a refundable $5,000 deposit or a $1,500 non-refundable training option.”</p>
-          <p>“I’ll also show you exactly how placement and refunds work so there are no surprises.”</p>
-          <p>“From there, you’ll decide if you want to bet on yourself or not — fair?”</p>
-          <p class="internal-note">
-            Coach: This is your pre-frame so the deposit doesn’t blindside them later.  
-            Schedule the Zoom / callback in the dialer, move them out of the stack, and jot notes (name, number, email, quick context).
-          </p>
-          <button class="dialer-move-btn" data-target="card8">
-            <span class="icon">↪</span>
-            <span>Move to Script – Deposit (Card 8)</span>
-          </button>
-        `,
-        back: "dialer5",
-        next: null
-      },
+   // Dialer Card 6 – Commitment Pre-Frame (UPDATED)
+card_d6: {
+  id: "card_d6",
+  type: "dialer",
+  tag: "Dialer – Commitment",
+  title: "Commitment Pre-Frame",
+  body: `
+    <p>“Perfect — on the longer call, I’ll walk you through how the training works and what the commitment looks like.”</p>
+
+    <p>“There <em>is</em> a commitment deposit associated with the training, but we don’t need to get into all of that right now — we’ll cover everything properly when we have enough time.”</p>
+
+    <p>“My goal on that call is simple: show you exactly how the opportunity works, answer your questions, and then <em>you</em> decide whether it makes sense for you — fair enough?”</p>
+
+    <p>“Let’s go ahead and set that up — what time can you actually sit down and talk for a few minutes?”</p>
+
+    <p class="internal-note">
+      <strong>Coach:</strong> This is your commitment pre-frame — keep it fast.<br>
+      You must mention there <em>is</em> a deposit so they’re not blindsided later, but do <strong>not</strong> explain details on a dialer call.<br>
+      If they ask about price or the deposit, say: “We’ll go over all of that in the longer call so you can see the full picture.”<br><br>
+      Your only job here is to book the Zoom / callback, move them out of the stack, and jot notes (name, number, email, main motivator, key concern).<br>
+      Save deep objections, disclosures, and full explanation for the actual interview.
+    </p>
+  `,
+  // keep whatever you already use here:
+  // e.g. to jump into the main script close:
+  scriptTarget: "card10"
+}
 
       // ---------- COMPANIES HUB & COMPANY CARDS ----------
 
